@@ -5,7 +5,7 @@ const vtns: string[] = [];
 for (const c of config) {
 	const [name, option] = c.split('@');
 	vtns.push(name);
-	console.log('option', option);
+
 	if (option) {
 		const [a, b] = option.split('&');
 		oldDuration.push(parseInt(a, 10));
