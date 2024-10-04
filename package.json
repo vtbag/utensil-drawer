@@ -1,0 +1,55 @@
+{
+	"name": "@vtbag/turn-signal",
+	"version": "1.0.2",
+	"main": "lib/index.js",
+	"description": "Turn-Signal is a lightweight script that enhances cross-document navigation by detecting the direction of browser navigation. It enables developers to create smooth, responsive transitions that adjust based on forward or backward navigation, delivering a more intuitive user experience.",
+	"files": [
+		"lib/index.js",
+		"lib/forced-traversal.js"
+	],
+	"exports": {
+		".": "./lib/index.js",
+		"./forced-traversal": "./lib/forced-traversal.js"
+	},
+	"scripts": {
+		"dev": "bin/bundle dev",
+		"build": "npm run format; bin/bundle",
+		"format": "prettier --write src | grep -v 'unchanged)$'",
+		"test": "bin/test",
+		"changeset": "changeset",
+		"release": "changeset publish"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/vtbag/turn-signal.git"
+	},
+	"keywords": [
+		"view",
+		"transitions",
+		"view transition",
+		"view-transition",
+		"directions",
+		"animations",
+		"cross-document",
+		"backward",
+		"history-traversal"
+	],
+	"author": "vtbag",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/vtbag/turn-signal/issues"
+	},
+	"homepage": "https://vtbag.pages.dev",
+	"funding": {
+		"type": "github",
+		"url": "https://github.com/sponsors/martrapp"
+	},
+	"devDependencies": {
+		"@changesets/cli": "^2.27.8",
+		"@eslint/js": "^9.11.1",
+		"@types/dom-navigation": "^1.0.4",
+		"esbuild": "^0.24.0",
+		"prettier": "^3.3.3",
+		"typescript": "^5.6.2"
+	}
+}
