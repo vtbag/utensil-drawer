@@ -1,75 +1,74 @@
-const currentScript = document.currentScript;
-function pageReveal(e: PageRevealEvent) {
-	//@ts-expect-error
-	const act = window.navigation?.activation;
-	if (e.viewTransition && act) {
-		const pages = allPages();
-		let hereIdx = 1,
-			fromIdx = 0;
-		if (act.navigationType === 'traverse' && pages.length === 0) {
-			hereIdx = act.entry?.index;
-			fromIdx = act.from?.index;
-		} else {
-			if (pages.length) {
-				const index = (url: string) => pages.indexOf(new URL(url).pathname);
-				hereIdx = index(location.href);
-				fromIdx = index(act.from?.url);
-				if (hereIdx === -1 || fromIdx === -1) {
-					hereIdx = 1;
-					fromIdx = 0;
-				}
-			}
-		}
-		emit();
-
-		function emit() {
-			let direction = ['backward', 'same', 'forward'];
-			let value;
-			let dir = currentScript!.dataset.directionAttribute;
-			if (dir) {
-				direction = dir.trim().split(/\s*,\s*/);
-
-				if (direction.length !== 4) {
-					console.error(
-						`[turn-signal] syntax error: data-direction-attribute value "${dir}" does not match "attributeName, backwardValue, sameValue, forwardValue"`
-					);
-					return;
-				}
-				const attributeName = direction.shift()!;
-				value =
-					hereIdx < fromIdx ? direction[0] : hereIdx === fromIdx ? direction[1] : direction[2];
-				if (attributeName && value) {
-					document.documentElement.setAttribute(attributeName, value);
-					e.viewTransition.finished.then(() =>
-						document.documentElement.removeAttribute(attributeName)
-					);
-				}
-			}
-			direction = ['backward', 'same', 'forward'];
-			dir = currentScript!.dataset.directionTypes;
-			if (dir) {
-				direction = dir.trim().split(/\s*,\s*/);
-
-				if (direction.length !== 3) {
-					console.error(
-						`[turn-signal] syntax error: data-direction-types value "${dir}" does not match "backwardValue, sameValue, forwardValue"`
-					);
-					return;
-				}
-			}
-			value = hereIdx < fromIdx ? direction[0] : hereIdx === fromIdx ? direction[1] : direction[2];
-			if (value) e.viewTransition.types.add(value);
-		}
+const config = document.currentScript?.dataset.viewTransitionNames?.split(/\s+/) ?? ['main'];
+const oldDuration: number[] = [];
+const newDuration: number[] = [];
+const vtns: string[] = [];
+for (const c of config) {
+	const [name, option] = c.split('@');
+	vtns.push(name);
+	console.log('option', option);
+	if (option) {
+		const [a, b] = option.split('&');
+		oldDuration.push(parseInt(a, 10));
+		newDuration.push(parseInt(b, 10));
+	} else {
+		oldDuration.push(0);
+		newDuration.push(0);
 	}
 }
+addEventListener('pageswap', () => localStorage.setItem('vtbag-camshaft', '' + scrollY));
+addEventListener('pagereveal', async (e) => {
+	if (!e.viewTransition) return;
+	let newOffset = 0;
+	// @ts-expect-error
+	if (navigation.activation.navigationType === 'traverse') {
+		newOffset = scrollY;
+	} else {
+		// @ts-expect-error
+		const hash = new URL(navigation.activation.entry.url).hash ?? '#top';
+		if (hash) {
+			document.documentElement.querySelector(hash)?.scrollIntoView({
+				behavior: 'instant',
+				block: 'start',
+			});
+			newOffset = scrollY;
+		}
+	}
+	const oldOffset = parseFloat(localStorage.getItem('vtbag-camshaft') ?? '0');
 
-function allPages() {
-	const selector = currentScript!.dataset.selector;
-	return selector
-		? [...document.querySelectorAll<HTMLAnchorElement>(selector)].map(
-				(e) => new URL(e.href ?? '.', location.href).pathname
-			)
-		: [];
-}
+	await e.viewTransition?.ready;
 
-'onpagereveal' in window && addEventListener('pagereveal', pageReveal);
+	vtns?.forEach((vtn, idx) => {
+		const groupStyle = getComputedStyle(
+			document.documentElement,
+			`::view-transition-group(${vtn})`
+		);
+		const groupAnimationName = groupStyle.animationName;
+		if (groupAnimationName === `-ua-view-transition-group-anim-${vtn}`) {
+			const ms = (s: string) => {
+				const res = parseFloat(s);
+				return s.endsWith('ms') ? res : res * 1000;
+			};
+			let option = {
+				id: `vtbag-camshaft-${vtn}-old`,
+				pseudoElement: `::view-transition-old(${vtn})`,
+				composite: 'accumulate',
+				fill: groupStyle.animationFillMode,
+				easing: groupStyle.animationTimingFunction,
+				duration: oldDuration[idx] || ms(groupStyle.animationDuration),
+			} as KeyframeAnimationOptions;
+
+			document.documentElement.animate({ top: [`0px`, `${newOffset - oldOffset}px`] }, option);
+
+			option = {
+				id: `vtbag-camshaft-${vtn}-new`,
+				pseudoElement: `::view-transition-new(${vtn})`,
+				composite: 'accumulate',
+				fill: groupStyle.animationFillMode,
+				easing: groupStyle.animationTimingFunction,
+				duration: newDuration[idx] || oldDuration[idx] || ms(groupStyle.animationDuration),
+			} as KeyframeAnimationOptions;
+
+			document.documentElement.animate({ top: [`${oldOffset - newOffset}px`, '0px'] }, option);
+		}
+	});
+});

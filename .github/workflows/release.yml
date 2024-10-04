@@ -7,7 +7,7 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
   release:
-    if: github.repository == 'vtbag/turn-signal'
+    if: github.repository == 'vtbag/cam-shaft'
     permissions:
       contents: write
       pull-requests: write

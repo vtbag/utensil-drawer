@@ -1,15 +1,13 @@
 {
-	"name": "@vtbag/turn-signal",
-	"version": "1.0.2",
+	"name": "@vtbag/cam-shaft",
+	"version": "0.0.9",
 	"main": "lib/index.js",
-	"description": "Turn-Signal is a lightweight script that enhances cross-document navigation by detecting the direction of browser navigation. It enables developers to create smooth, responsive transitions that adjust based on forward or backward navigation, delivering a more intuitive user experience.",
+	"description": "The Cam-Shaft bumps your view transition images into place to avoid the pseudo-smooth-scroll effect when applying view transitions to elements that are taller than the viewport.",
 	"files": [
-		"lib/index.js",
-		"lib/forced-traversal.js"
+		"lib/index.js"
 	],
 	"exports": {
-		".": "./lib/index.js",
-		"./forced-traversal": "./lib/forced-traversal.js"
+		".": "./lib/index.js"
 	},
 	"scripts": {
 		"dev": "bin/bundle dev",
@@ -21,23 +19,24 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/vtbag/turn-signal.git"
+		"url": "git+https://github.com/vtbag/cam-shaft.git"
 	},
 	"keywords": [
 		"view",
 		"transitions",
-		"view transition",
 		"view-transition",
-		"directions",
-		"animations",
-		"cross-document",
-		"backward",
-		"history-traversal"
+		"view-transitions",
+		"smooth-scroll",
+		"instant",
+		"scroll",
+		"smooth-scrolling",
+		"scrolling",
+		"cross-document"
 	],
 	"author": "vtbag",
 	"license": "ISC",
 	"bugs": {
-		"url": "https://github.com/vtbag/turn-signal/issues"
+		"url": "https://github.com/vtbag/cam-shaft/issues"
 	},
 	"homepage": "https://vtbag.pages.dev",
 	"funding": {
