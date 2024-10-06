@@ -1,10 +1,12 @@
 {
 	"name": "@vtbag/cam-shaft",
+	"type": "module",
 	"version": "1.0.0",
 	"main": "lib/index.js",
 	"description": "The Cam-Shaft bumps your view transition images into place to avoid the pseudo-smooth-scroll effect when applying view transitions to elements that are taller than the viewport.",
 	"files": [
-		"lib/index.js"
+		"lib/index.js",
+		"lib/index.d.ts"
 	],
 	"exports": {
 		".": "./lib/index.js"
