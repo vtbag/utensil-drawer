@@ -1,4 +1,4 @@
-# The Cam-Shaft
+# @vtbag/cam-shaft
 
 ## 1.0.1 - 2024-10-17
 
