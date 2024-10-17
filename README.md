@@ -13,9 +13,9 @@ The @vtbag website can be found at https://vtbag.pages.dev/
 
 ## !!! News !!!
 
-First version of this code!
+Dependency updates
 
-<!-- For details see the [CHANGELOG](https://github.com/vtbag/cam-shaft/blob/main/CHANGELOG.md) -->
+For details see the [CHANGELOG](https://github.com/vtbag/cam-shaft/blob/main/CHANGELOG.md)
 
 
 ## What is it?
