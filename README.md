@@ -9,7 +9,7 @@ Cam-Shaft: Bump your view transition pseudo-elements into place to avoid that un
 ![minzip](https://badgen.net/bundlephobia/minzip/@vtbag/cam-shaft)
 [![NPM Downloads](https://img.shields.io/npm/dw/@vtbag/cam-shaft)](https://www.npmjs.com/package/@vtbag/cam-shaft)
 
-The @vtbag website can be found at https://vtbag.pages.dev/
+The @vtbag website can be found at https://vtbag.dev/
 
 ## !!! News !!!
 
@@ -22,4 +22,4 @@ For details see the [CHANGELOG](https://github.com/vtbag/cam-shaft/blob/main/CHA
 
 When you assign a `view-transition-name` to an element that is larger than the viewport, the View Transition API adds a default animation to the `::view-transition-group()` of the element that makes instant scrolling look like smooth scrolling. The Cam-Shaft bumps and nudges your view transition pseudo-elements back into place to avoid that pseudo-smooth-scrolling effect.
 
-[See the Cam-Shaft in action](https://vtbag.pages.dev/shaft-demo2/1/) and [see how it can be used in your own projects](https://vtbag.pages.dev/tools/cam-shaft/).
+[See the Cam-Shaft in action](https://vtbag.dev/shaft-demo2/1/) and [see how it can be used in your own projects](https://vtbag.dev/tools/cam-shaft/).
