@@ -1,9 +1,9 @@
 {
-	"name": "@vtbag/cam-shaft",
+	"name": "@vtbag/utensil-drawer",
 	"type": "module",
 	"version": "1.0.1",
 	"main": "lib/index.js",
-	"description": "The Cam-Shaft bumps your view transition images into place to avoid the pseudo-smooth-scroll effect when applying view transitions to elements that are taller than the viewport.",
+	"description": "Pull out just what you need to craft seamless transitions. The Utensil Drawer holds reusable functions to help you build websites with view transitions. It is a bit sparse right now, but like the one in your kitchen, it is bound to fill up over time.",
 	"files": [
 		"lib/index.js",
 		"lib/index.d.ts"
@@ -21,7 +21,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/vtbag/cam-shaft.git"
+		"url": "git+https://github.com/vtbag/utensil-drawer.git"
 	},
 	"keywords": [
 		"view",
@@ -38,7 +38,7 @@
 	"author": "vtbag",
 	"license": "ISC",
 	"bugs": {
-		"url": "https://github.com/vtbag/cam-shaft/issues"
+		"url": "https://github.com/vtbag/utensil-drawer/issues"
 	},
 	"homepage": "https://vtbag.dev",
 	"funding": {

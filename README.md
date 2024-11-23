@@ -1,13 +1,13 @@
-[⭐️Please star to support this work⭐️](https://github.com/vtbag/cam-shaft)
+[⭐️Please star to support this work⭐️](https://github.com/vtbag/utensil-drawer)
 
-# 🐫 The Cam-Shaft
+# 🛠 The Utensil Drawer
 
-Cam-Shaft: Bump your view transition pseudo-elements into place to avoid that unexpected pseudo-smooth-scrolling effect.
+Utensil Drawer: Pull out just the functions you need to craft seamless transitions.
 
-![Build Status](https://github.com/vtbag/cam-shaft/actions/workflows/run-build.yml/badge.svg)
-[![npm version](https://img.shields.io/npm/v/@vtbag/cam-shaft/latest)](https://www.npmjs.com/package/@vtbag/cam-shaft)
-![minzip](https://badgen.net/bundlephobia/minzip/@vtbag/cam-shaft)
-[![NPM Downloads](https://img.shields.io/npm/dw/@vtbag/cam-shaft)](https://www.npmjs.com/package/@vtbag/cam-shaft)
+![Build Status](https://github.com/vtbag/utensil-drawer/actions/workflows/run-build.yml/badge.svg)
+[![npm version](https://img.shields.io/npm/v/@vtbag/utensil-drawer/latest)](https://www.npmjs.com/package/@vtbag/utensil-drawer)
+![minzip](https://badgen.net/bundlephobia/minzip/@vtbag/utensil-drawer)
+[![NPM Downloads](https://img.shields.io/npm/dw/@vtbag/utensil-drawer)](https://www.npmjs.com/package/@vtbag/utensil-drawer)
 
 The @vtbag website can be found at https://vtbag.dev/
 
@@ -15,11 +15,10 @@ The @vtbag website can be found at https://vtbag.dev/
 
 Dependency updates
 
-For details see the [CHANGELOG](https://github.com/vtbag/cam-shaft/blob/main/CHANGELOG.md)
+For details see the [CHANGELOG](https://github.com/vtbag/utensil-drawer/blob/main/CHANGELOG.md)
 
 
 ## What is it?
 
-When you assign a `view-transition-name` to an element that is larger than the viewport, the View Transition API adds a default animation to the `::view-transition-group()` of the element that makes instant scrolling look like smooth scrolling. The Cam-Shaft bumps and nudges your view transition pseudo-elements back into place to avoid that pseudo-smooth-scrolling effect.
+The Utensil Drawer holds reusable functions to help you build websites with view transitions. It is a bit sparse right now, but like the one in your kitchen, it is bound to fill up over time.
 
-[See the Cam-Shaft in action](https://vtbag.dev/shaft-demo2/1/) and [see how it can be used in your own projects](https://vtbag.dev/tools/cam-shaft/).
