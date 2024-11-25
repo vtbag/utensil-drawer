@@ -2,7 +2,7 @@
 
 # 🛠 The Utensil Drawer
 
-Utensil Drawer: Pull out just the functions you need to craft seamless transitions.
+Utensil Drawer: Pull out just the tools you need to craft polished transitions.
 
 ![Build Status](https://github.com/vtbag/utensil-drawer/actions/workflows/run-build.yml/badge.svg)
 [![npm version](https://img.shields.io/npm/v/@vtbag/utensil-drawer/latest)](https://www.npmjs.com/package/@vtbag/utensil-drawer)
@@ -13,7 +13,7 @@ The @vtbag website can be found at https://vtbag.dev/
 
 ## !!! News !!!
 
-Dependency updates
+This is the initial release.
 
 For details see the [CHANGELOG](https://github.com/vtbag/utensil-drawer/blob/main/CHANGELOG.md)
 
@@ -22,3 +22,4 @@ For details see the [CHANGELOG](https://github.com/vtbag/utensil-drawer/blob/mai
 
 The Utensil Drawer holds reusable functions to help you build websites with view transitions. It is a bit sparse right now, but like the one in your kitchen, it is bound to fill up over time.
 
+> This preliminary version of the package is not yet supported, not even tested. Be patient.

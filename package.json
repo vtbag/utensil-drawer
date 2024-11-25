@@ -1,15 +1,18 @@
 {
 	"name": "@vtbag/utensil-drawer",
 	"type": "module",
-	"version": "1.0.1",
+	"version": "0.0.0",
 	"main": "lib/index.js",
 	"description": "Pull out just what you need to craft seamless transitions. The Utensil Drawer holds reusable functions to help you build websites with view transitions. It is a bit sparse right now, but like the one in your kitchen, it is bound to fill up over time.",
+	"sideEffects": false,
 	"files": [
-		"lib/index.js",
-		"lib/index.d.ts"
+		"lib/*.js",
+		"lib/*.d.ts",
+		"lib/bundled/*.js"
 	],
 	"exports": {
-		".": "./lib/index.js"
+		".": "./lib/index.js",
+		"./vtn": "./lib/bundled/vtn.js"
 	},
 	"scripts": {
 		"dev": "bin/bundle dev",
@@ -28,12 +31,10 @@
 		"transitions",
 		"view-transition",
 		"view-transitions",
-		"smooth-scroll",
-		"instant",
-		"scroll",
-		"smooth-scrolling",
-		"scrolling",
-		"cross-document"
+		"library",
+		"toolbox",
+		"utils",
+		"utilities"
 	],
 	"author": "vtbag",
 	"license": "ISC",
@@ -46,11 +47,12 @@
 		"url": "https://github.com/sponsors/martrapp"
 	},
 	"devDependencies": {
-		"@changesets/cli": "^2.27.8",
-		"@eslint/js": "^9.14.0",
+		"@changesets/cli": "^2.27.10",
+		"@eslint/js": "^9.15.0",
 		"@types/dom-navigation": "^1.0.4",
+		"@types/dom-view-transitions": "^1.0.5",
 		"esbuild": "^0.24.0",
 		"prettier": "^3.3.3",
-		"typescript": "^5.6.3"
+		"typescript": "^5.7.2"
 	}
 }

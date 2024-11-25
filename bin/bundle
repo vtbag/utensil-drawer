@@ -1,11 +1,12 @@
 #! /bin/sh
 
+rm -rf lib
+#mkdir lib
 if [ "$1" = "dev" ]; then
   OPTS="--sourcemap --watch"
 else
   OPTS="--minify"
-  (cd lib && rm *.js.map) >> /dev/null 2>&1
 fi
-npx esbuild src/index.ts --bundle $OPTS --target=ESnext --outdir=lib
-
 tsc
+rm -rf lib/bundled
+npx esbuild src/bundled/*.ts --bundle $OPTS --target=ESnext --outdir=lib/bundled
