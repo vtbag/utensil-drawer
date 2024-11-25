@@ -13,7 +13,7 @@ The @vtbag website can be found at https://vtbag.dev/
 
 ## !!! News !!!
 
-This is the initial release.
+This is an early release.
 
 For details see the [CHANGELOG](https://github.com/vtbag/utensil-drawer/blob/main/CHANGELOG.md)
 
