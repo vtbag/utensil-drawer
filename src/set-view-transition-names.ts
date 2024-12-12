@@ -1,7 +1,6 @@
 export function setViewTransitionNames(selector: string, prefix: any) {
 	const elements = document.querySelectorAll<HTMLElement>(selector);
 	elements.forEach((element, idx, array) => {
-		//console.log('element, prefix, idx :>> ', element, prefix, idx);
 		element.style.viewTransitionName = `${prefix}${array.length > 1 ? idx : ''}`;
 	});
 }
