@@ -1,5 +1,11 @@
 # @vtbag/utensil-drawer
 
+## 0.0.3
+
+### Patch Changes
+
+- 3f7f2a6: Also sets names on page load
+
 ## 0.0.2 - 2024-11-25
 
 ### Patch Changes
