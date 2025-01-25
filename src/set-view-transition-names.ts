@@ -1,15 +1,40 @@
-export function setViewTransitionNames(selector: string, prefix: any) {
-	const elements = document.querySelectorAll<HTMLElement>(selector);
+/* Sets the view transition name in the style attribute of selected elements, see setGivenViewTransitionNames.
+`selector´is an arbitrary CSS selector for the current document
+*/
+export function setSelectedViewTransitionNames(selector: string, prefix: any, force = false) {
+	setGivenViewTransitionNames([...document.querySelectorAll<HTMLElement>(selector)], prefix, force);
+}
+
+/* Sets the view transition name in the style attribute of the given elements.
+If `elements` has exactly one entry, `prefix` is used as a name.
+Otherwise the `elements` are named with the `prefix` with an appended index starting from 0.
+If `force` is true, the names are always set, otherwise only if they are not already set.
+If the prefix string ends with a '~', the character is replaced by a '-' and the names are assigned in random order.
+*/
+export function setGivenViewTransitionNames(elements: HTMLElement[], prefix: string, force = false) {
+	if (prefix[prefix.length - 1] === '~') {
+		prefix = prefix.slice(0, -1) + '-';
+		shuffle(elements);
+	}
 	elements.forEach((element, idx, array) => {
-		element.style.viewTransitionName = `${prefix}${array.length > 1 ? idx : ''}`;
+		force && (element.style.viewTransitionName = `${prefix}${array.length > 1 ? idx : ''}`)
+			|| (element.style.viewTransitionName ||= `${prefix}${array.length > 1 ? idx : ''}`);
 	});
 }
 
 export function setOldPageViewTransitionNames(selector: string, prefix: any) {
-	addEventListener('pageswap', () => setViewTransitionNames(selector, prefix));
+	addEventListener('pageswap', () => setSelectedViewTransitionNames(selector, prefix));
 }
 
 // The pagereveal event fires very early. Thus scripts using this code should load inside the <head>
 export function setNewPageViewTransitionNames(selector: string, prefix: any) {
-	addEventListener('pagereveal', () => setViewTransitionNames(selector, prefix));
+	addEventListener('pagereveal', () => setSelectedViewTransitionNames(selector, prefix));
+}
+
+function shuffle<T>(array: T[]): T[] {
+	for (let i = array.length - 1; i > 0; --i) {
+		const j = Math.floor(Math.random() * (i + 1));
+		[array[i], array[j]] = [array[j], array[i]];
+	}
+	return array;
 }

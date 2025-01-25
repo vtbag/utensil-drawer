@@ -31,7 +31,6 @@ function patch(startViewTransition: typeof Document.prototype.startViewTransitio
 	function update(updateDOM?: () => Promise<void> | void) {
 		return async () => {
 			updateDOM && (await updateDOM());
-			console.log('drawer.viewTransition :>> ', drawer.viewTransition);
 			drawer.after.map((interceptor) => interceptor(drawer.viewTransition!));
 			drawer.after = [];
 		};

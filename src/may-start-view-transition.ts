@@ -1,5 +1,4 @@
 import { ensureDrawer } from './drawer';
-import { Update } from './types';
 
 export function mayStartViewTransition(param: StartViewTransitionParameter, breakExisting = false) {
 	const drawer = ensureDrawer();

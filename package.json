@@ -12,7 +12,7 @@
 	],
 	"exports": {
 		".": "./lib/index.js",
-		"./vtn": "./lib/bundled/vtn.js"
+		"./declarative-names": "./lib/bundled/declarative-names.js"
 	},
 	"scripts": {
 		"dev": "bin/bundle dev",
@@ -47,12 +47,12 @@
 		"url": "https://github.com/sponsors/martrapp"
 	},
 	"devDependencies": {
-		"@changesets/cli": "^2.27.11",
-		"@eslint/js": "^9.17.0",
+		"@changesets/cli": "^2.27.12",
+		"@eslint/js": "^9.19.0",
 		"@types/dom-navigation": "^1.0.4",
 		"@types/dom-view-transitions": "^1.0.5",
 		"esbuild": "^0.24.2",
 		"prettier": "^3.4.2",
-		"typescript": "^5.7.2"
+		"typescript": "^5.7.3"
 	}
 }
