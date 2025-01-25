@@ -1,5 +1,11 @@
 # @vtbag/utensil-drawer
 
+## 0.0.4
+
+### Patch Changes
+
+- 8b2d2f5: Still not officially supported. Code refactorings and renames. Breaking: vtn -> declarative-names.
+
 ## 0.0.3 -2024-12-12
 
 ### Patch Changes
