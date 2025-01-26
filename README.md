@@ -2,7 +2,7 @@
 
 # 🛠 The Utensil Drawer
 
-Utensil Drawer: Pull out just the tools you need to craft polished transitions.
+Utensil Drawer: Pick the tools you need to craft the view transitions you want!
 
 ![Build Status](https://github.com/vtbag/utensil-drawer/actions/workflows/run-build.yml/badge.svg)
 [![npm version](https://img.shields.io/npm/v/@vtbag/utensil-drawer/latest)](https://www.npmjs.com/package/@vtbag/utensil-drawer)
