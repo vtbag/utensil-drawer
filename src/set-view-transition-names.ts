@@ -11,14 +11,18 @@ Otherwise the `elements` are named with the `prefix` with an appended index star
 If `force` is true, the names are always set, otherwise only if they are not already set.
 If the prefix string ends with a '~', the character is replaced by a '-' and the names are assigned in random order.
 */
-export function setGivenViewTransitionNames(elements: HTMLElement[], prefix: string, force = false) {
+export function setGivenViewTransitionNames(
+	elements: HTMLElement[],
+	prefix: string,
+	force = false
+) {
 	if (prefix[prefix.length - 1] === '~') {
 		prefix = prefix.slice(0, -1) + '-';
 		shuffle(elements);
 	}
 	elements.forEach((element, idx, array) => {
-		force && (element.style.viewTransitionName = `${prefix}${array.length > 1 ? idx : ''}`)
-			|| (element.style.viewTransitionName ||= `${prefix}${array.length > 1 ? idx : ''}`);
+		(force && (element.style.viewTransitionName = `${prefix}${array.length > 1 ? idx : ''}`)) ||
+			(element.style.viewTransitionName ||= `${prefix}${array.length > 1 ? idx : ''}`);
 	});
 }
 

@@ -4,7 +4,7 @@ import { setSelectedViewTransitionNames } from '../set-view-transition-names';
 
 The function sets up eventListeners that look for script elements with a `data-vtbag-decl` attribute and uses its value to set view transition names. The value is interpreted as a semicolon separated list of `<selector> '=' <prefix>` pairs. Those pairs are then used to set view transition names.
 
-See setSelectedViewTransitionNames() for additional information.
+See setSelectedViewTransitionNames() for additional information. When `~=` is used instead of `=`, setSelectedViewTransitionNames() is called with `weak = true`.
 
 Do not use '=' or ';' in <selector> or <prefix> values
 
@@ -32,7 +32,8 @@ function set(what: 'new' | 'old') {
 					const weak = selector.endsWith('~');
 					weak && (selector = selector.slice(0, -1));
 					setSelectedViewTransitionNames(selector.trim(), prefix.trim(), !weak);
-			}});
+				}
+			});
 		});
 	};
 }
