@@ -20,7 +20,7 @@
 		"dev": "bin/bundle dev",
 		"build": "npm run format; bin/bundle",
 		"format": "prettier --write src | grep -v 'unchanged)$'",
-		"test": "bin/bundle test && playwright test",
+		"test": "bin/bundle test && npx playwright install && playwright test",
 		"changeset": "changeset",
 		"start": "npx serve --debug -l 3000 tests",
 		"release": "changeset publish"
