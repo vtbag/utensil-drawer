@@ -13,3 +13,5 @@ tsc
 rm -rf lib/bundled
 npx esbuild src/bundled/*.ts --bundle $OPTS --target=ESnext --outdir=lib/bundled
 cp lib/*.js lib/bundled/*.js lib/bundled/*.map tests  >/dev/null 2>&1
+
+exit 0
