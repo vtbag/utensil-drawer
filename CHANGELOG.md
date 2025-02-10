@@ -1,5 +1,15 @@
 # @vtbag/utensil-drawer
 
+## 1.0.0
+
+### Major Changes
+
+- b561687: The declarative-names script left experimental state, justifying the first major release of the Drawer!
+
+### Patch Changes
+
+- 1e8e650: adds may-start-view-transition as a common wrapper for browsers with and without native view transition support
+
 ## 0.0.4 - 2025-01-25
 
 ### Patch Changes
