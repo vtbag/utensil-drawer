@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+	<title>Page 1</title>
+	<script type="module">
+		import { mayStartViewTransition } from "/may-start-view-transition.js";
+		document.querySelector("button").addEventListener("click", async () => {
+			const viewTransition = mayStartViewTransition(async () => {
+				console.log("test update1");
+				await new Promise(resolve => setTimeout(resolve, 100));
+				console.log("test update2");
+			});
+			console.log("test start");
+			await viewTransition.updateCallbackDone;
+			console.log("test done");
+			await viewTransition.ready;
+			console.log("test", document.getAnimations()[0]?.effect.pseudoElement);
+			await viewTransition.finished;
+			console.log("test finished");
+		})
+	</script>
+</head>
+
+<body>
+	<h1>Page 1</h1>
+	<button>Click Me!</button>
+</body>
+
+</html>

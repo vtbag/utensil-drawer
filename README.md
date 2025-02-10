@@ -13,13 +13,15 @@ The @vtbag website can be found at https://vtbag.dev/
 
 ## !!! News !!!
 
-This is an early release.
+Stable: `declarative-names` allows you to assign view transition names to a set of HTML elements, offering a more reliable and controllable alternative to `view-transition-name: auto`.
+
+For details see https://vtbag.dev/tools/utensil-drawer/
+
+## What happened before?
 
 For details see the [CHANGELOG](https://github.com/vtbag/utensil-drawer/blob/main/CHANGELOG.md)
-
 
 ## What is it?
 
 The Utensil Drawer holds reusable functions to help you build websites with view transitions. It is a bit sparse right now, but like the one in your kitchen, it is bound to fill up over time.
 
-> This preliminary version of the package is not yet supported, not even tested. Be patient.
