@@ -1,6 +1,6 @@
 import { test, expect, Page } from '@playwright/test';
 let text = "";
-async function start(page: Page, url:string) {
+async function start(page: Page, url: string) {
 	text = "";
 	page.on("console", msg => msg.text().startsWith("test ") && (text += msg.text().slice(4)));
 	await page.goto(url);
@@ -10,13 +10,16 @@ async function start(page: Page, url:string) {
 }
 
 test('call', async ({ page, browserName }) => {
-	test.skip(browserName === 'firefox', "not for firefox");
+	//	test.skip(browserName === 'firefox', "not for firefox");
 	await start(page, 'http://localhost:3000/page1/');
 	await page.locator('button').click();
 	await new Promise<void>(resolve => setTimeout(resolve, 1000));
-	expect (text).toBe(" start update1 update2 done ::view-transition-group(root) finished");
+	expect(text).toBe(browserName === "firefox"
+		? " update1 start update2 done undefined finished"
+		: " start update1 update2 done ::view-transition-group(root) finished");
 });
 
+/*
 test('call_ff', async ({ page, browserName }) => {
 	test.skip(browserName !== 'firefox', "only for firefox");
 	await start(page, 'http://localhost:3000/page1/');
@@ -24,3 +27,4 @@ test('call_ff', async ({ page, browserName }) => {
 	await new Promise<void>(resolve => setTimeout(resolve, 1000));
 	expect (text).toBe(" update1 start update2 done undefined finished");
 });
+*/

@@ -8,14 +8,13 @@
 	"files": [
 		"lib/*.js",
 		"lib/*.d.ts",
-		"lib/bundled/*.js",
-		"src/*.ts"
+		"lib/bundled/*.js"
 	],
 	"exports": {
 		".": "./lib/index.js",
 		"./declarative-names": "./lib/bundled/declarative-names.js",
 		"./may-start-view-transition": "./lib/may-start-view-transition.js",
-		"./src": "./src"
+		"./set-view-transition-names": "./lib/set-view-transition-names.js"
 	},
 	"scripts": {
 		"dev": "bin/bundle dev",
@@ -23,7 +22,7 @@
 		"format": "prettier --write src | grep -v 'unchanged)$'",
 		"test": "bin/bundle test && playwright test",
 		"changeset": "changeset",
-		"start": "npx serve -l 3000 tests",
+		"start": "npx serve --debug -l 3000 tests",
 		"release": "changeset publish"
 	},
 	"repository": {

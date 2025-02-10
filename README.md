@@ -13,7 +13,7 @@ The @vtbag website can be found at https://vtbag.dev/
 
 ## !!! News !!!
 
-Stable: `declarative-names` allows you to assign view transition names to a set of HTML elements, offering a more reliable and controllable alternative to `view-transition-name: auto`.
+Stable: `declarative-names` allows you to assign view transition names to a set of HTML elements, offering a more reliable and controllable alternative to `view-transition-name: auto` that also works for cross-document navigation.
 
 For details see https://vtbag.dev/tools/utensil-drawer/
 

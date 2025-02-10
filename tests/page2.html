@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+	<title>Page 1</title>
+	<script type="vtbag" data-vtbag-decl="a=test1-"></script>
+	<script src="/declarative-names.js" data-vtbag-decl="a,h1~=test2-;p:nth-child(odd)=test3~;p~=test4~"></script>
+</head>
+
+<body>
+	<h1>Page 1</h1>
+	<a href="/page1">Click Me!</a>
+	<a href="/page1">Click Me!</a>
+	<p></p>
+	<p></p>
+	<p></p>
+	<p></p>
+	<p></p>
+	<p></p>
+	<p></p>
+	<p></p>
+	<p></p>
+	<p></p>
+	<p></p>
+	<p></p>
+	<p></p>
+	<p></p>
+	<p></p>
+	<p></p>
+	<p></p>
+	<p></p>
+	<p></p>
+	<p></p>
+</body>
+<script>setTimeout(()=>{
+	console.log("test", document.querySelector("a").style.viewTransitionName)
+	console.log("test", document.querySelector("h1").style.viewTransitionName)
+const ps=document.querySelectorAll("p");
+console.log("test", ps[0].style.viewTransitionName.startsWith("test4-") && ps[1].style.viewTransitionName.startsWith("test3-"));
+console.log("test", ps[0].style.viewTransitionName !== "test4-0" || ps[2].style.viewTransitionName !=="test4-1");
+},100)</script>
+</html>
