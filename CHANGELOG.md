@@ -4,7 +4,7 @@
 
 ### Major Changes
 
-- 1e8e650: The declarative-names script left experimental state, justifying the first major release of the Drawer!
+- b561687: The declarative-names script left experimental state, justifying the first major release of the Drawer!
 
 ### Patch Changes
 
