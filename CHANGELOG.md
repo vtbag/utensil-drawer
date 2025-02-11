@@ -1,5 +1,11 @@
 # @vtbag/utensil-drawer
 
+## 1.0.1
+
+### Patch Changes
+
+- ef4110e: Fixes a bug where assigning "" with declarative-names led to incorrect view-transition-names
+
 ## 1.0.0
 
 ### Major Changes
