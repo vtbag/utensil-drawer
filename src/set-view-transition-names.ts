@@ -2,6 +2,7 @@
 `selector´is an arbitrary CSS selector for the current document
 */
 export function setSelectedViewTransitionNames(selector: string, prefix: any, force = false) {
+	console.log(`[${selector}]`,`[${prefix}]`)
 	setGivenViewTransitionNames([...document.querySelectorAll<HTMLElement>(selector)], prefix, force);
 }
 
@@ -16,13 +17,17 @@ export function setGivenViewTransitionNames(
 	prefix: string,
 	force = false
 ) {
+	console.log(`[${elements}]`,`[${prefix}]`)
+
 	if (prefix[prefix.length - 1] === '~') {
 		prefix = prefix.slice(0, -1) + '-';
 		shuffle(elements);
 	}
 	elements.forEach((element, idx, array) => {
-		(force && (element.style.viewTransitionName = `${prefix}${array.length > 1 ? idx : ''}`)) ||
-			(element.style.viewTransitionName ||= `${prefix}${array.length > 1 ? idx : ''}`);
+		const name = `${prefix}${array.length > 1 && prefix !== "" && prefix !== "none" ? idx : ''}`;
+		console.log('name :>> ', `"${name}"`);
+		(force && (element.style.viewTransitionName = name)) ||
+			(element.style.viewTransitionName ||= name);
 	});
 }
 

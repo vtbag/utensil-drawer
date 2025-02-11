@@ -7,7 +7,7 @@
 	<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 	<title>Page 1</title>
 	<script type="vtbag" data-vtbag-decl="a=test1-"></script>
-	<script src="/declarative-names.js" data-vtbag-decl="a,h1~=test2-;p:nth-child(odd)=test3~;p~=test4~"></script>
+	<script src="/declarative-names.js" data-vtbag-decl="a,h1~=test2-;p:nth-child(odd)=test3~;p~=test4~;p:last-of-type="></script>
 </head>
 
 <body>
@@ -33,7 +33,7 @@
 	<p></p>
 	<p></p>
 	<p></p>
-	<p></p>
+	<p id="lastOne"></p>
 </body>
 <script>setTimeout(()=>{
 	console.log("test", document.querySelector("a").style.viewTransitionName)
@@ -41,5 +41,6 @@
 const ps=document.querySelectorAll("p");
 console.log("test", ps[0].style.viewTransitionName.startsWith("test4-") && ps[1].style.viewTransitionName.startsWith("test3-"));
 console.log("test", ps[0].style.viewTransitionName !== "test4-0" || ps[2].style.viewTransitionName !=="test4-1");
+console.log("test", lastOne.style.viewTransitionName === "");
 },100)</script>
 </html>

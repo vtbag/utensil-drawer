@@ -11,8 +11,8 @@ async function start(page: Page, url:string) {
 
 test('call', async ({ page, browserName }) => {
 	await start(page, 'http://localhost:3000/page2/');
-	await new Promise<void>(resolve => setTimeout(resolve, 400));
-	expect (text).toBe(" test1-0 test2-0 true true");
+	await new Promise<void>(resolve => setTimeout(resolve, 600));
+	expect (text).toBe(" test1-0 test2-0 true true true");
 	text = "";
 });
 
