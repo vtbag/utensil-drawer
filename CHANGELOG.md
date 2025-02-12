@@ -1,5 +1,15 @@
 # @vtbag/utensil-drawer
 
+## 1.2.0 - 2025-02-12
+
+### Minor Changes
+
+- 4119550: Breaking: renamed escapeCustomIdent to escapeViewTransitionName. On client-side, CSS.escape is recommended instead.
+
+### Patch Changes
+
+- 9f1d32e: [Declarative Names]: Improves error handling when an illegal CSS selector is used to automatically set view-transition-names.
+
 ## 1.1.0 - 2025-02-12
 
 ### Minor Changes
