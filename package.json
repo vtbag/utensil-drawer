@@ -11,16 +11,26 @@
 		"lib/bundled/*.js"
 	],
 	"exports": {
-		".": "./lib/index.js",
 		"./declarative-names": "./lib/bundled/declarative-names.js",
-		"./may-start-view-transition": "./lib/may-start-view-transition.js",
-		"./set-view-transition-names": "./lib/set-view-transition-names.js"
+		"./may-start-view-transition": {
+			"types": "./lib/may-start-view-transition.d.ts",
+			"import": "./lib/may-start-view-transition.js"
+		},
+		"./set-view-transition-names": {
+			"types": "./lib/set-view-transition-names.d.ts",
+			"import": "./lib/set-view-transition-names.js"
+		},
+		"./custom-ident": {
+			"types": "./lib/escape-custom-ident.d.ts",
+			"import": "./lib/escape-custom-ident.js"
+		}
+
 	},
 	"scripts": {
 		"dev": "bin/bundle dev",
 		"build": "npm run format; bin/bundle",
 		"format": "prettier --write src | grep -v 'unchanged)$'",
-		"test": "bin/bundle test && npx playwright install --with-deps && playwright test",
+		"test": "bin/test",
 		"changeset": "changeset",
 		"start": "npx serve --debug -l 3000 tests",
 		"release": "changeset publish"

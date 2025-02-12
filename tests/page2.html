@@ -5,15 +5,16 @@
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-	<title>Page 1</title>
-	<script type="vtbag" data-vtbag-decl="a=test1-"></script>
-	<script src="/declarative-names.js" data-vtbag-decl="a,h1~=test2-;p:nth-child(odd)=test3~;p~=test4~;p:last-of-type="></script>
+	<title>Page 2</title>
+	<script type="vtbag" data-vtbag-decl="a=te~st1-;;i"></script>
+	<script src="/declarative-names.js"
+		data-vtbag-decl="a,h1~=test!2-;p:nth-child(odd)=test3~;p~=test4~;p:last-of-type="></script>
 </head>
 
 <body>
-	<h1>Page 1</h1>
-	<a href="/page1">Click Me!</a>
-	<a href="/page1">Click Me!</a>
+	<h1>Page 2</h1>
+	<a href="/page2">Click Me!</a>
+	<a href="/page2">Click Me!</a>
 	<p></p>
 	<p></p>
 	<p></p>
@@ -24,7 +25,7 @@
 	<p></p>
 	<p></p>
 	<p></p>
-	<p></p>
+	<p><i></i><i id="someI"></i><i></i></p>
 	<p></p>
 	<p></p>
 	<p></p>
@@ -34,13 +35,17 @@
 	<p></p>
 	<p></p>
 	<p id="lastOne"></p>
+
+	<script>setTimeout(() => {
+			console.log("test", document.querySelector("a").style.viewTransitionName);
+			console.log("test", document.querySelector("h1").style.viewTransitionName);
+			const ps = document.querySelectorAll("p");
+			console.log("test", ps[0].style.viewTransitionName.startsWith("test4-") && ps[1].style.viewTransitionName.startsWith("test3-"));
+			console.log("test", ps[0].style.viewTransitionName !== "test4-0" || ps[2].style.viewTransitionName !== "test4-1");
+			console.log("test", lastOne.style.viewTransitionName === "");
+			console.log("test", someI.style.viewTransitionName);
+		}, 100)
+	</script>
 </body>
-<script>setTimeout(()=>{
-	console.log("test", document.querySelector("a").style.viewTransitionName)
-	console.log("test", document.querySelector("h1").style.viewTransitionName)
-const ps=document.querySelectorAll("p");
-console.log("test", ps[0].style.viewTransitionName.startsWith("test4-") && ps[1].style.viewTransitionName.startsWith("test3-"));
-console.log("test", ps[0].style.viewTransitionName !== "test4-0" || ps[2].style.viewTransitionName !=="test4-1");
-console.log("test", lastOne.style.viewTransitionName === "");
-},100)</script>
+
 </html>

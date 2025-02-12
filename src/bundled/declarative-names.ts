@@ -6,7 +6,7 @@ The function sets up eventListeners that look for script elements with a `data-v
 
 See setSelectedViewTransitionNames() for additional information. When `~=` is used instead of `=`, setSelectedViewTransitionNames() is called with `weak = true`.
 
-Do not use '=' or ';' in <selector> or <prefix> values
+Do not use ';' in <selector> or <prefix> values. Don't use '=' in <prefix> values.
 
 While the `data-vtbag-decl` attribute is interpreted for the old and for the new page, the `data-vtbag-decl-new` and `data-vtbag-decl-old` attributes are only interpreted when the page is entered and left, respectively. This allows for different view transition names to be set for defining different enter and exit animations when the page is the source or the target page of a navigation.
 
@@ -26,12 +26,19 @@ function set(what: 'new' | 'old') {
 				(script.getAttribute('data-vtbag-decl') ?? '') +
 				';' +
 				(script.getAttribute(`data-vtbag-decl-${what}`) ?? '');
-			spec.split(/\s*;\s*/).forEach((cmd) => {
-				let [selector, prefix] = cmd.split(/=/, 2);
-				if (prefix !== undefined) {
-					const weak = selector.endsWith('~');
-					weak && (selector = selector.slice(0, -1));
-					setSelectedViewTransitionNames(selector.trim(), prefix.trim(), !weak);
+			spec.split(/\s*;\s*/).forEach((cmd, idx) => {
+				cmd = cmd.trim();
+				if (cmd.length > 0) {
+					const splits = cmd.split("=");
+					if (splits.length > 1) {
+						let selector = splits.slice(0, -1).join("=");
+						const prefix = splits[splits.length - 1];
+						const weak = selector.endsWith('~');
+						weak && (selector = selector.slice(0, -1));
+						setSelectedViewTransitionNames(selector.trim(), prefix.trim(), !weak);
+					} else {
+						setSelectedViewTransitionNames(cmd.trim(), `vtbag-decl-${idx}-`, false);
+					}
 				}
 			});
 		});

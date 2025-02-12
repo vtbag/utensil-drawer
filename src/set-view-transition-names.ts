@@ -1,3 +1,5 @@
+import { escapeCustomIdent } from './escape-custom-ident';
+
 /* Sets the view transition name in the style attribute of selected elements, see setGivenViewTransitionNames.
 `selector´is an arbitrary CSS selector for the current document
 */
@@ -20,6 +22,7 @@ export function setGivenViewTransitionNames(
 		prefix = prefix.slice(0, -1) + '-';
 		shuffle(elements);
 	}
+	prefix = escapeCustomIdent(prefix);
 	elements.forEach((element, idx, array) => {
 		const name = `${prefix}${array.length > 1 && prefix !== '' && prefix !== 'none' && prefix !== 'auto' ? idx : ''}`;
 		(force && (element.style.viewTransitionName = name)) ||

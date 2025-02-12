@@ -13,11 +13,13 @@ The @vtbag website can be found at https://vtbag.dev/
 
 ## !!! News !!!
 
-Stable: `declarative-names` allows you to assign view transition names to a set of HTML elements, offering a more reliable and controllable alternative to `view-transition-name: auto` that also works for cross-document navigation.
+`customIdent()` is a function that escapes your view transition names so you are not limited to the `A-Za-Z0-9-_` characters. "😀"!
 
 For details see https://vtbag.dev/tools/utensil-drawer/
 
 ## What happened before?
+
+> Stable: `declarative-names` allows you to assign view transition names to a set of HTML elements, offering a more reliable and controllable alternative to `view-transition-name: auto` that works cross-browser and also for cross-document navigation.
 
 For details see the [CHANGELOG](https://github.com/vtbag/utensil-drawer/blob/main/CHANGELOG.md)
 

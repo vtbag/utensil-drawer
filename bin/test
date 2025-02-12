@@ -1,3 +1,7 @@
 #! /bin/sh
 
-echo "see @vtbag/website"
+bin/bundle test
+if [ "$GITHUB_ACTIONS" = "true" ]; then
+  npx playwright install --with-deps
+fi
+playwright test
