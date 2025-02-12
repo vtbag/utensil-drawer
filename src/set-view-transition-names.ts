@@ -4,7 +4,14 @@ import { escapeCustomIdent } from './escape-custom-ident';
 `selector´is an arbitrary CSS selector for the current document
 */
 export function setSelectedViewTransitionNames(selector: string, prefix: any, force = false) {
-	setGivenViewTransitionNames([...document.querySelectorAll<HTMLElement>(selector)], prefix, force);
+	let selected;
+	try {
+		selected = document.querySelectorAll<HTMLElement>(selector);
+	} catch (e) {
+		console.error((e as Error).message.replace(/.*:/,"[vtbag] Error selecting elements for view transition names:"));
+		return;
+	}
+	setGivenViewTransitionNames([...selected], prefix, force);
 }
 
 /* Sets the view transition name in the style attribute of the given elements.
