@@ -13,7 +13,7 @@ The @vtbag website can be found at https://vtbag.dev/
 
 ## !!! News !!!
 
-`customIdent()` is a function that escapes your view transition names so you are not limited to the `A-Za-Z0-9-_` characters. "😀"!
+`escapeViewTransitionName()` is a function that escapes your view transition names so you are not stuck with just `A-Za-Z0-9-_` characters. "😀"! It's a handy alternative to `CSS.escape()` for environments where that's not available.
 
 For details see https://vtbag.dev/tools/utensil-drawer/
 

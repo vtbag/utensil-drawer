@@ -20,9 +20,9 @@
 			"types": "./lib/set-view-transition-names.d.ts",
 			"import": "./lib/set-view-transition-names.js"
 		},
-		"./custom-ident": {
-			"types": "./lib/escape-custom-ident.d.ts",
-			"import": "./lib/escape-custom-ident.js"
+		"./escape-view-transition-name": {
+			"types": "./lib/escape-view-transition-name.d.ts",
+			"import": "./lib/escape-view-transition-name.js"
 		}
 	},
 	"scripts": {

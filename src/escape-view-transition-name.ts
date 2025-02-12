@@ -1,4 +1,7 @@
-export function escapeCustomIdent(s: string) {
+/* IMPORTANT NOTICE: in a browser, you can use CSS.escape() to escape <custom-ident>s */
+/* This implementation might be useful if you need to generate properly escaped custom identifiers on the server-side */
+
+export function escapeViewTransitionName(s: string) {
 	const res = [];
 	let sep = '';
 	const match = s.match(/^-*[0-9]/);
@@ -10,7 +13,12 @@ export function escapeCustomIdent(s: string) {
 	}
 	for (const c of s) {
 		const cp = c.codePointAt(0);
-		if (!cp) continue;
+		if (cp === undefined) continue;
+		if (cp === 0) {
+			res.push("\ufffd");
+			sep = '';
+			continue;
+		}
 		if ((cp >= 48 && cp <= 57) || (cp >= 65 && cp <= 70) || (cp >= 97 && cp <= 102)) {
 			res.push(sep + c);
 			sep = '';
