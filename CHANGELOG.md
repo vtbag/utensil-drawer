@@ -1,5 +1,11 @@
 # @vtbag/utensil-drawer
 
+## 1.1.0 - 2025-02-12
+
+### Minor Changes
+
+- fa8bd91: Adds a reusable function to escape view transition names that have characters beyond A-Za-z0-9-\_
+
 ## 1.0.1 - 2025-02-11
 
 ### Patch Changes
