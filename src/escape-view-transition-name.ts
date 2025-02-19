@@ -15,7 +15,7 @@ export function escapeViewTransitionName(s: string) {
 		const cp = c.codePointAt(0);
 		if (cp === undefined) continue;
 		if (cp === 0) {
-			res.push("\ufffd");
+			res.push('\ufffd');
 			sep = '';
 			continue;
 		}

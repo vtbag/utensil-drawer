@@ -1,5 +1,3 @@
-
-
 /* Sets the view transition name in the style attribute of selected elements, see setGivenViewTransitionNames.
 `selector´is an arbitrary CSS selector for the current document
 */
@@ -8,7 +6,12 @@ export function setSelectedViewTransitionNames(selector: string, prefix: any, fo
 	try {
 		selected = document.querySelectorAll<HTMLElement>(selector);
 	} catch (e) {
-		console.error((e as Error).message.replace(/.*:/,"[vtbag] Error selecting elements for view transition names:"));
+		console.error(
+			(e as Error).message.replace(
+				/.*:/,
+				'[vtbag] Error selecting elements for view transition names:'
+			)
+		);
 		return;
 	}
 	setGivenViewTransitionNames([...selected], prefix, force);

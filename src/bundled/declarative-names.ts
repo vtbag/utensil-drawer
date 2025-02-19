@@ -29,9 +29,9 @@ function set(what: 'new' | 'old') {
 			spec.split(/\s*;\s*/).forEach((cmd, idx) => {
 				cmd = cmd.trim();
 				if (cmd.length > 0) {
-					const splits = cmd.split("=");
+					const splits = cmd.split('=');
 					if (splits.length > 1) {
-						let selector = splits.slice(0, -1).join("=");
+						let selector = splits.slice(0, -1).join('=');
 						const prefix = splits[splits.length - 1];
 						const weak = selector.endsWith('~');
 						weak && (selector = selector.slice(0, -1));
