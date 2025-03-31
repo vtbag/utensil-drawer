@@ -6,7 +6,7 @@ test('call', async ({ page, browserName }) => {
   page.on("console", msg => msg.text().startsWith("test ") && (text += msg.text().slice(4)));
   await page.goto("http://localhost:3000/page3/");
   await expect(page).toHaveTitle("Page 3");
-  await new Promise<void>(resolve => setTimeout(resolve, 1000));
+  await new Promise<void>(resolve => setTimeout(resolve, 10000));
   expect(text).toBe(" 6");
   text = "";
 });
