@@ -4,12 +4,13 @@ rm -rf lib
 #mkdir lib
 if [ "$1" = "dev" ]; then
   OPTS="--sourcemap --watch"
+  TSC_OPTS="--watch"
 elif [ "$1" = "test" ]; then
   OPTS="--sourcemap"
 else
   OPTS="--minify"
 fi
-tsc
+tsc $TSC_OPTS &
 rm -rf lib/bundled
 npx esbuild src/bundled/*.ts --bundle $OPTS --target=ESnext --outdir=lib/bundled
 cp lib/*.js lib/bundled/*.js lib/bundled/*.map tests  >/dev/null 2>&1
