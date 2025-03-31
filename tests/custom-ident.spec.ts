@@ -8,5 +8,4 @@ test('call', async ({ page, browserName }) => {
   await expect(page).toHaveTitle("Page 3");
   await new Promise<void>(resolve => setTimeout(resolve, 5000));
   expect(text).toBe(" 6");
-  text = "";
 });

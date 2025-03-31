@@ -11,6 +11,5 @@ test('call', async ({ page, browserName }) => {
 	await expect(page).toHaveTitle("Page 2");
 	await new Promise<void>(resolve => setTimeout(resolve, 5000));
 	expect (text).toBe(" te\\~st1-0 test\\!2-0 true true true vtbag-decl-2-1");
-	text = "";
 });
 
