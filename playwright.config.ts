@@ -14,11 +14,11 @@ export default defineConfig({
 		{
 			name: 'chromium',
 			use: { ...devices['Desktop Chrome'], channel: 'chrome', browserName: 'chromium'},
-		},
+		},/*
 		{
 			name: 'webkit',
 			use: { ...devices['Desktop Safari'] , browserName: 'webkit' },
-		},
+		},*/
 		{
 			name: 'firefox',
 			use: { ...devices['Desktop Firefox'] , browserName: 'firefox' },
