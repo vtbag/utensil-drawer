@@ -13,7 +13,7 @@ test('call', async ({ page, browserName }) => {
 	//	test.skip(browserName === 'firefox', "not for firefox");
 	await start(page, 'http://localhost:3000/page1/');
 	await page.locator('button').click();
-	await new Promise<void>(resolve => setTimeout(resolve, 10000));
+	await new Promise<void>(resolve => setTimeout(resolve, 5000));
 	expect(text).toBe(browserName === "firefox"
 		? " update1 start update2 done undefined finished"
 		: " start update1 update2 done ::view-transition-group(root) finished");
