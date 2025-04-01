@@ -7,6 +7,7 @@
 	<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 	<title>Page 1</title>
 	<script type="module">
+		console.log("SHAKA!");
 		import { mayStartViewTransition } from "/may-start-view-transition.js";
 		document.querySelector("button").addEventListener("click", async () => {
 			const viewTransition = mayStartViewTransition(async () => {
