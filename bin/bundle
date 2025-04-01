@@ -15,9 +15,9 @@ if echo "$TSC_OPTS" | grep -q -- "--watch"; then
   tsc $TSC_OPTS &
 else
   tsc $TSC_OPTS
-  cp lib/*.js lib/bundled/*.js lib/bundled/*.map tests  >/dev/null 2>&1
+  rm -rf lib/bundled
+  npx esbuild src/bundled/*.ts --bundle $OPTS --target=ESnext --outdir=lib/bundled
+  cp lib/*.js lib/bundled/*.js lib/bundled/*.map tests >/dev/null 2>&1
 fi
-rm -rf lib/bundled
-npx esbuild src/bundled/*.ts --bundle $OPTS --target=ESnext --outdir=lib/bundled
 
 exit 0
