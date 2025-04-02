@@ -1,5 +1,11 @@
 # @vtbag/utensil-drawer
 
+## 1.2.1
+
+### Patch Changes
+
+- 9e7051b: Adds experimental setVectors() function that makes parameters of morph animations accessible in CSS rules.
+
 ## 1.2.0 - 2025-02-12
 
 ### Minor Changes
