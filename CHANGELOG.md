@@ -1,5 +1,12 @@
 # @vtbag/utensil-drawer
 
+## 1.2.2
+
+### Patch Changes
+
+- acb3747: mayStartViewTransition() got support for automatic chaining of view transitions to prevent killing of the current transition when a new one is started
+- e37dd13: The vectors-script got even better: parameters allow for optimizing the size of the generated CSS for peudo-properties.
+
 ## 1.2.1 - 2025-04-03
 
 ### Patch Changes
