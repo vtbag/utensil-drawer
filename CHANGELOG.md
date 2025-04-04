@@ -1,6 +1,6 @@
 # @vtbag/utensil-drawer
 
-## 1.2.2
+## 1.2.2 - 2025-04-04
 
 ### Patch Changes
 
