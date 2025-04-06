@@ -1,5 +1,11 @@
 # @vtbag/utensil-drawer
 
+## 1.2.3 - 2025-04-06
+
+### Patch Changes
+
+- 9237268: Extended parameters of experimental mayStartViewTransition
+
 ## 1.2.2 - 2025-04-04
 
 ### Patch Changes
