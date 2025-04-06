@@ -12,25 +12,25 @@
 	],
 	"exports": {
 		"./declarative-names": "./lib/bundled/declarative-names.js",
-		"./may-start-view-transition": {
-			"types": "./lib/may-start-view-transition.d.ts",
-			"import": "./lib/may-start-view-transition.js"
-		},
 		"./dynamic-style": {
 			"types": "./lib/dynamic-style.d.ts",
 			"import": "./lib/dynamic-style.js"
 		},
-		"./vectors": {
-			"types": "./lib/vectors.d.ts",
-			"import": "./lib/vectors.js"
+		"./escape-view-transition-name": {
+			"types": "./lib/escape-view-transition-name.d.ts",
+			"import": "./lib/escape-view-transition-name.js"
+		},
+		"./may-start-view-transition": {
+			"types": "./lib/may-start-view-transition.d.ts",
+			"import": "./lib/may-start-view-transition.js"
 		},
 		"./set-view-transition-names": {
 			"types": "./lib/set-view-transition-names.d.ts",
 			"import": "./lib/set-view-transition-names.js"
 		},
-		"./escape-view-transition-name": {
-			"types": "./lib/escape-view-transition-name.d.ts",
-			"import": "./lib/escape-view-transition-name.js"
+		"./vectors": {
+			"types": "./lib/vectors.d.ts",
+			"import": "./lib/vectors.js"
 		}
 	},
 	"scripts": {
