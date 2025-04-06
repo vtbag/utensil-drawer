@@ -23,10 +23,10 @@ export interface ExtendedViewTransition extends ViewTransition {
 	Cranks up speed if frequently interrupted.
 */
 export function mayStartViewTransition(
-	param?: StartViewTransitionParameter | UpdateCallback, extensions = { chain: false, speedUpWhenChained: 1 }, scope = document
+	param?: StartViewTransitionParameter | UpdateCallback, extensions = { chaining: false, speedUpWhenChained: 1 }, scope = document
 ): ViewTransition {
 
-	if (extensions?.chain && currentViewTransition) {
+	if (extensions?.chaining && currentViewTransition) {
 		const transition = chain(param instanceof Function ? param : param?.update, param instanceof Function ? [] : param?.types ?? []);
 		if (extensions?.speedUpWhenChained !== 1) {
 			document.getAnimations().forEach(a => {
