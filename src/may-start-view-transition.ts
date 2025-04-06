@@ -1,8 +1,9 @@
-import { unPauseAllAnimations } from "./pause";
+
 
 let currentViewTransition: ViewTransition | undefined;
-const blocked: ExtendedViewTransition[] = [];
-interface ExtendedViewTransition extends ViewTransition {
+const chained: ExtendedViewTransition[] = [];
+export interface ExtendedViewTransition extends ViewTransition {
+	chained: boolean;
 	update: UpdateCallback;
 	skipped: boolean;
 	updateResolve: (value: void | PromiseLike<void>) => void;
@@ -22,15 +23,16 @@ interface ExtendedViewTransition extends ViewTransition {
 	Cranks up speed if frequently interrupted.
 */
 export function mayStartViewTransition(
-	param?: StartViewTransitionParameter | UpdateCallback, stack = false, scope = document
+	param?: StartViewTransitionParameter | UpdateCallback, extensions = { chain: false, speedUpWhenChained: 1 }, scope = document
 ): ViewTransition {
 
-	if (stack && currentViewTransition) {
-		const transition = block(param instanceof Function ? param : param?.update, param instanceof Function ? [] : param?.types ?? []);
-		blocked.push(transition);
-		document.getAnimations().forEach(a => {
-			a.effect?.pseudoElement?.startsWith("::view-transition") && (a.playbackRate *= 2);
-		});
+	if (extensions?.chain && currentViewTransition) {
+		const transition = chain(param instanceof Function ? param : param?.update, param instanceof Function ? [] : param?.types ?? []);
+		if (extensions?.speedUpWhenChained !== 1) {
+			document.getAnimations().forEach(a => {
+				a.effect?.pseudoElement?.startsWith("::view-transition") && (a.playbackRate *= extensions.speedUpWhenChained, console.log(a.playbackRate));
+			});
+		}
 		return transition;
 	}
 	const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -63,7 +65,7 @@ function fallback(
 		types: new Set(types),
 	} as ViewTransition);
 }
-function block(
+function chain(
 	update: UpdateCallback = () => { },
 	types: string[] | Set<string>
 ): ExtendedViewTransition {
@@ -72,7 +74,8 @@ function block(
 	const ready = new Promise<void>((res, rej) => (readyResolve = res, readyReject = rej));
 	const finished = new Promise<void>((res, rej) => (finishResolve = res, finishReject = rej));
 
-	return {
+	const transition = {
+		chained: true,
 		skipped: false,
 		updateResolve,
 		updateReject,
@@ -87,14 +90,17 @@ function block(
 		skipTransition() { (this as ExtendedViewTransition).skipped = true; },
 		types,
 	} as unknown as ExtendedViewTransition;
+
+	chained.push(transition);
+	return transition;
 }
 
 function resilient(transition: ViewTransition): ViewTransition {
 	transition.finished.then(() => {
 		currentViewTransition = undefined;
-		if (blocked.length === 0) return;
-		const copied = [...blocked];
-		blocked.length = 0;
+		if (chained.length === 0) return;
+		const copied = [...chained];
+		chained.length = 0;
 		const transition = mayStartViewTransition({
 			update: async () => {
 				copied.forEach(async update => update.update && await update.update());
