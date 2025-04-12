@@ -1,5 +1,11 @@
 # @vtbag/utensil-drawer
 
+## 1.2.4 - 2025-04-12
+
+### Patch Changes
+
+- ab4be5b: Makes StartViewTransitionExtension fields optional and let you control respect for reduced motion.
+
 ## 1.2.3 - 2025-04-06
 
 ### Patch Changes
