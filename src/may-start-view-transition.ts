@@ -1,8 +1,14 @@
 
+export interface StartViewTransitionExtensions {
+	chaining?: boolean;
+	speedUpWhenChained?: number;
+	respectReducedMotion?: boolean;
+}
 
 let currentViewTransition: ViewTransition | undefined;
 const chained: ExtendedViewTransition[] = [];
-export interface ExtendedViewTransition extends ViewTransition {
+
+interface ExtendedViewTransition extends ViewTransition {
 	chained: boolean;
 	update: UpdateCallback;
 	skipped: boolean;
@@ -20,22 +26,23 @@ export interface ExtendedViewTransition extends ViewTransition {
 	Without native view transition support just calls the update function and returns a view transition object with promises.
 	Calling this while a transition is active won't cancel the ongoing transition
 	but stack no transitions into a single one to follow the current one.
-	Cranks up speed if frequently interrupted.
+	Can crank up speed if frequently interrupted.
 */
 export function mayStartViewTransition(
-	param?: StartViewTransitionParameter | UpdateCallback, extensions = { chaining: false, speedUpWhenChained: 1 }, scope = document
+	param?: StartViewTransitionParameter | UpdateCallback, extensions: StartViewTransitionExtensions = {}, scope = document
 ): ViewTransition {
 
-	if (extensions?.chaining && currentViewTransition) {
+	const { chaining = false, speedUpWhenChained = 1, respectReducedMotion = true } = extensions;
+	if (chaining && currentViewTransition) {
 		const transition = chain(param instanceof Function ? param : param?.update, param instanceof Function ? [] : param?.types ?? []);
-		if (extensions?.speedUpWhenChained !== 1) {
+		if (speedUpWhenChained !== 1) {
 			document.getAnimations().forEach(a => {
-				a.effect?.pseudoElement?.startsWith("::view-transition") && (a.playbackRate *= extensions.speedUpWhenChained, console.log(a.playbackRate));
+				a.effect?.pseudoElement?.startsWith("::view-transition") && (a.playbackRate *= speedUpWhenChained);
 			});
 		}
 		return transition;
 	}
-	const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	const reducedMotion = respectReducedMotion && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 	if (param === undefined || param instanceof Function) {
 		if (scope.startViewTransition && !reducedMotion) return resilient(scope.startViewTransition(param));
 		return fallback(param, []);
