@@ -1,5 +1,12 @@
 # @vtbag/utensil-drawer
 
+## 1.2.5 - 2025-05-07
+
+### Patch Changes
+
+- 15b263d: Fixes an issue with undefined animation-names
+- bd66236: Changed options for experimental mayStartViewTransition
+
 ## 1.2.4 - 2025-04-12
 
 ### Patch Changes
