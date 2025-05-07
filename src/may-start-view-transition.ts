@@ -1,5 +1,5 @@
 export interface StartViewTransitionExtensions {
-	respectReducedMotion?: boolean; // defaullt is true
+	respectReducedMotion?: boolean; // default is true
 	collisionBehavior?: 'skipOld' | 'chaining'; // default is "skipOld"
 	speedUpWhenChained?: number; // default is 1.0;
 }
