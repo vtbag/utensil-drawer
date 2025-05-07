@@ -15,12 +15,9 @@
 				console.log("test update2");
 			});
 			console.log("test start");
-			await viewTransition.updateCallbackDone;
-			console.log("test done");
-			await viewTransition.ready;
-			console.log("test", document.getAnimations()[0]?.effect.pseudoElement);
-			await viewTransition.finished;
-			console.log("test finished");
+			viewTransition.updateCallbackDone.then(() => console.log("test done"), e => console.log("test update error", e));
+			viewTransition.ready.then(() => console.log("test", document.getAnimations()[0]?.effect.pseudoElement), e => console.log("test ready error", e));
+			viewTransition.finished.then(() => console.log("test finished"), e => console.log("test finished error", e));
 		})
 	</script>
 </head>

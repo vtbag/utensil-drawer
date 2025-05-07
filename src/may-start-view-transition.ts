@@ -1,29 +1,26 @@
 export interface StartViewTransitionExtensions {
 	respectReducedMotion?: boolean; // defaullt is true
-	collisionBehavior?: "skipOld" | "chaining";  // default is "skipOld"
+	collisionBehavior?: 'skipOld' | 'chaining'; // default is "skipOld"
 	speedUpWhenChained?: number; // default is 1.0;
 }
 
-let nativeSupport = "none";
+let nativeSupport = 'none';
 if (document.startViewTransition) {
 	try {
 		document.startViewTransition({ update: () => { }, types: [] }).skipTransition();
-		nativeSupport = "full";
+		nativeSupport = 'full';
 	} catch (e) {
-		nativeSupport = "partial";
+		nativeSupport = 'partial';
 	}
 	// @ts-expect-error
 	if (Element.prototype.startViewTransition) {
-		nativeSupport = "scoped";
+		nativeSupport = 'scoped';
 	}
 }
 
 export function nativeViewTransitionSupport() {
 	return nativeSupport;
 }
-
-
-
 
 let currentViewTransition: ViewTransition | undefined;
 const chained: ExtendedViewTransition[] = [];
@@ -41,7 +38,6 @@ interface ExtendedViewTransition extends ViewTransition {
 	finishReject: (reason?: any) => void;
 }
 
-
 /*
 	One version of startViewTransition() for all browsers with or without native support.
 	Without native support or with "respectReducedMotion" and reduced motion the function  behaves as if every transition were skipped.
@@ -54,16 +50,25 @@ interface ExtendedViewTransition extends ViewTransition {
 	You can crank up the speed of running animations by setting "speedUpWhenChained" to > 1.
 */
 export function mayStartViewTransition(
-	param?: StartViewTransitionParameter | UpdateCallback, extensions: StartViewTransitionExtensions = {}, scope = document
+	param?: StartViewTransitionParameter | UpdateCallback,
+	extensions: StartViewTransitionExtensions = {},
+	scope = document
 ): ViewTransition {
-
-	const { collisionBehavior = "skipOld", speedUpWhenChained = 1, respectReducedMotion = true } = extensions;
+	const {
+		collisionBehavior = 'skipOld',
+		speedUpWhenChained = 1,
+		respectReducedMotion = true,
+	} = extensions;
 
 	const update = (param instanceof Function ? param : param?.update) ?? (() => { });
 	const types = param instanceof Function ? [] : param?.types;
 
-	const transition = chain(update, types ?? [], { collisionBehavior, speedUpWhenChained, respectReducedMotion });
-	if (collisionBehavior === "skipOld") {
+	const transition = chain(update, types ?? [], {
+		collisionBehavior,
+		speedUpWhenChained,
+		respectReducedMotion,
+	});
+	if (collisionBehavior === 'skipOld') {
 		currentViewTransition?.skipTransition();
 	}
 
@@ -72,19 +77,26 @@ export function mayStartViewTransition(
 	return transition;
 
 	function batch() {
-		currentViewTransition = startViewTransition(scope, unchainUpdates, [], chained[0].extensions.respectReducedMotion);
+		currentViewTransition = startViewTransition(
+			scope,
+			unchainUpdates,
+			[],
+			chained[0].extensions.respectReducedMotion
+		);
 
 		currentViewTransition.ready.then(
-			() => updated.forEach(update => update.readyResolve()),
-			() => updated.forEach(update => update.readyReject())
+			() => updated.forEach((update) => update.readyResolve()),
+			() => updated.forEach((update) =>  update.readyReject())
 		);
-		currentViewTransition.finished.then(
-			() => updated.forEach(update => update.finishResolve()),
-			() => updated.forEach(update => update.finishReject())
-		).finally(() => {
-			updated.length = 0;
-			currentViewTransition = undefined;
-		}).finally(() => chained.length > 0 && batch());
+		currentViewTransition.finished
+			.then(
+				() => updated.forEach((update) => update.finishResolve()),
+				() => updated.forEach((update) => update.finishReject()))
+			.finally(() => {
+				updated.length = 0;
+				currentViewTransition = undefined;
+			})
+			.finally(() => chained.length > 0 && batch());
 	}
 }
 
@@ -92,35 +104,44 @@ export function mayStartViewTransition(
 // On browsers without native support -- or if motion should be reduced -- it will run the update callback, ignore the types, and won't start animations.
 // With native support it will call the API function.
 // If the native function can not deal with types, they are silently ignored
-function startViewTransition(scope: Document | HTMLElement, update: () => (void | Promise<void>), types: string[] | Set<string>, respectReducedMotion = true): ViewTransition {
+function startViewTransition(
+	scope: Document | HTMLElement,
+	update: () => void | Promise<void>,
+	types: string[] | Set<string>,
+	respectReducedMotion = true
+): ViewTransition {
+	const reducedMotion =
+		respectReducedMotion && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-	const reducedMotion = respectReducedMotion && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-	// @ts-expect-error
-	if (!scope.startViewTransition || reducedMotion) {
-		return fallback();
+	if (nativeSupport === 'none' || reducedMotion) {
+		return fallback(update, types);
 	}
 
-	if (nativeSupport === "partial") {
+	if (nativeSupport === 'partial') {
 		// @ts-expect-error
 		return scope.startViewTransition(update);
 	}
 
 	// @ts-expect-error
 	return scope.startViewTransition({ update, types });
-
 }
-
 
 function fallback(
 	update: UpdateCallback = () => { },
 	types: string[] | Set<string> = []
 ): ViewTransition {
 
-	const updateCallbackDone = Promise.resolve(update());
-	const ready = new Promise<void>((_, rej) => updateCallbackDone.then(rej, rej));
-	const finished = new Promise<void>((res, rej) => ready.finally(() => updateCallbackDone.then(res, rej)));
-
+	const updateCallbackDone = new Promise<void>(async (resolve, reject) => {
+		try {
+			await Promise.resolve();
+			await update();
+			resolve();
+		} catch (e) {
+			reject(e);
+		}
+	});
+	const ready = new Promise<void>((res) => updateCallbackDone.then(res, res));
+	const finished = new Promise<void>((res) => ready.then(res, res));
 
 	return {
 		updateCallbackDone,
@@ -138,9 +159,11 @@ function chain(
 ): ExtendedViewTransition {
 	let updateResolve, updateReject, readyResolve, readyReject, finishResolve, finishReject;
 
-	const updateCallbackDone = new Promise<void>((res, rej) => (updateResolve = res, updateReject = rej));
-	const ready = new Promise<void>((res, rej) => (readyResolve = res, readyReject = rej));
-	const finished = new Promise<void>((res, rej) => (finishResolve = res, finishReject = rej));
+	const updateCallbackDone = new Promise<void>(
+		(res, rej) => ((updateResolve = res), (updateReject = rej))
+	);
+	const ready = new Promise<void>((res, rej) => ((readyResolve = res), (readyReject = rej)));
+	const finished = new Promise<void>((res, rej) => ((finishResolve = res), (finishReject = rej)));
 	let skipped = false;
 	const transition = {
 		chained: true,
@@ -154,8 +177,12 @@ function chain(
 		extensions,
 		ready,
 		finished,
-		skipTransition() { skipped = true; },
-		wasSkipped() { return skipped; },
+		skipTransition() {
+			skipped = true;
+		},
+		wasSkipped() {
+			return skipped;
+		},
 		update,
 		types,
 	} as unknown as ExtendedViewTransition;
@@ -163,44 +190,46 @@ function chain(
 	chained.push(transition);
 
 	if (extensions.speedUpWhenChained !== 1) {
-		document.getAnimations().forEach(a => {
-			a.effect?.pseudoElement?.startsWith("::view-transition") && (a.playbackRate *= extensions.speedUpWhenChained!);
+		document.getAnimations().forEach((a) => {
+			a.effect?.pseudoElement?.startsWith('::view-transition') &&
+				(a.playbackRate *= extensions.speedUpWhenChained!);
 		});
 	}
 
 	return transition;
 }
 
-
 async function unchainUpdates(): Promise<void> {
 	let failed = false;
 	let executed = 0;
 
 	const start = Date.now();
-	while (chained.length > 0 && (Date.now() - start) < 100) {
 
+
+	while (chained.length > 0 && Date.now() - start < 100) {
 		const call = chained.shift()!;
-		const onCollision = call.extensions.collisionBehavior;
-
 
 		++executed;
 		updated.push(call);
-		if (call.types) call.types.forEach(t => currentViewTransition!.types.add(t));
-
+		if (call.types) {
+			call.types.forEach((t) =>currentViewTransition!.types.add(t));
+		}
 		try {
-			call.update === undefined || await call.update();
+			call.update === undefined || (await call.update());
 			call.updateResolve();
 		} catch (e) {
 			failed ||= true;
 			call.updateReject(e);
 		}
 
-		if (call.extensions.respectReducedMotion && window.matchMedia('(prefers-reduced-motion: reduce)').matches) call.skipTransition();
+		if (
+			call.extensions.respectReducedMotion &&
+			window.matchMedia('(prefers-reduced-motion: reduce)').matches
+		)
+			call.skipTransition();
 		if (call.wasSkipped()) {
 			currentViewTransition!.skipTransition();
 		}
-
-
 	}
-	return Promise[failed ? "reject" : "resolve"]();
+	return Promise[failed ? 'reject' : 'resolve']();
 }

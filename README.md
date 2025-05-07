@@ -12,6 +12,11 @@ Utensil Drawer: Pick the tools you need to craft the view transitions you want!
 The @vtbag website can be found at https://vtbag.dev/
 
 ## !!! News !!!
+> New `collisionBehavior` option to `mayStartViewTransition` replaces former `chaining` (experimental, breaking + bug fixing)
+
+For details see https://vtbag.dev/tools/utensil-drawer/
+
+## What happened before?
 
 > Here are two exciting (still experimental) additions:
 
@@ -24,10 +29,6 @@ You can now access the key parameters of each morph animation in CSS rules! Make
     * Falls back gracefully if view transitions are not  natively supported
     * 🥁🥁🥁 Optionally **prevents killing** the current transitions when a new one is started **by automatically chaining** view transitions 🥁🥁🥁
 
-
-For details see https://vtbag.dev/tools/utensil-drawer/
-
-## What happened before?
 
 > `escapeViewTransitionName()` is a function that escapes your view transition names so you are not stuck with just `A-Za-Z0-9-_` characters. "😀"! It's a handy alternative to `CSS.escape()` for environments where that's not available.
 

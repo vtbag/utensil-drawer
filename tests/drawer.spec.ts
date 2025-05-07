@@ -9,6 +9,6 @@ test('call', async ({ page, browserName }) => {
 	await page.locator('button').click();
 	await new Promise<void>(resolve => setTimeout(resolve, 1000));
 	expect(text).toBe(browserName === "firefox"
-		? " update1 start update2 done undefined finished"
+		? " start update1 update2 done undefined finished"
 		: " start update1 update2 done ::view-transition-group(root) finished");
 });
