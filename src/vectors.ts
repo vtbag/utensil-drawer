@@ -24,7 +24,7 @@ export function setVectors(instructions: Inst[] = [{ pattern: ".*", props: ["x",
 	const styles: string[] = [];
 	document.body.getBoundingClientRect(); // force reflow for Safari
 	document.getAnimations().forEach((animation: any) => {
-		if (!animation.animationName.startsWith("-ua-view-transition-group")) return;
+		if (!animation.animationName?.startsWith("-ua-view-transition-group")) return;
 		const effect = animation.effect;
 		const pseudo = effect?.pseudoElement;
 		const group = pseudo.slice(24, -1);
