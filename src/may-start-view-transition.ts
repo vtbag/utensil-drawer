@@ -70,7 +70,7 @@ export function mayStartViewTransition(
 	const types = param instanceof Function ? [] : param?.types;
 
 	if (collisionBehavior === 'skipNew' && currentViewTransition && !updating) {
-		return fakeViewTransition(update, types);
+		return createViewTransitionSurrogate(update, types);
 	}
 
 	const transition = chain(update, types ?? [], {
@@ -124,7 +124,7 @@ function startViewTransition(
 		respectReducedMotion && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 	updating = true;
 	if (nativeSupport === 'none' || reducedMotion) {
-		transition = fakeViewTransition(update, types);
+		transition = createViewTransitionSurrogate(update, types);
 	} else {
 		if (nativeSupport === 'partial') {
 			// @ts-expect-error
@@ -148,7 +148,7 @@ function startViewTransition(
 	return transition;
 }
 
-export function fakeViewTransition(
+export function createViewTransitionSurrogate(
 	update: UpdateCallback = () => {},
 	types: string[] | Set<string> = []
 ): ViewTransition {
