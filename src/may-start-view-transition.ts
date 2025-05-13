@@ -1,13 +1,14 @@
 export interface StartViewTransitionExtensions {
 	respectReducedMotion?: boolean; // default is true
-	collisionBehavior?: 'skipOld' | 'chaining'; // default is "skipOld"
-	speedUpWhenChained?: number; // default is 1.0;
+	collisionBehavior?: 'skipOld' | 'chaining' | 'skipNew'; // default is "skipOld"
+	speedUpWhenChained?: number; // default is 1.0
+	maxUpdateDuration?: number; // default is 250
 }
 
 let nativeSupport = 'none';
 if (document.startViewTransition) {
 	try {
-		document.startViewTransition({ update: () => { }, types: [] }).skipTransition();
+		document.startViewTransition({ update: () => {}, types: [] }).skipTransition();
 		nativeSupport = 'full';
 	} catch (e) {
 		nativeSupport = 'partial';
@@ -22,7 +23,10 @@ export function nativeViewTransitionSupport() {
 	return nativeSupport;
 }
 
+type AddProperty<T, K extends string, V> = T & { [P in K]: V };
+
 let currentViewTransition: ViewTransition | undefined;
+let updating = false;
 const chained: ExtendedViewTransition[] = [];
 const updated: ExtendedViewTransition[] = [];
 
@@ -45,7 +49,8 @@ interface ExtendedViewTransition extends ViewTransition {
 	Collision behavior:
 	By default ("skipOld") behaves like the API function where new invocations skip active ones.
 	This can be set to "skipNew", where new invocations are skipped if another one is still active.
-	With "chaining" the update functions of concurrent calls will be combined to one view transition (all calls that arrive in the first 100 ms and before the new state is captured) or in a followup transition for all new calls arriving later.
+	With "chaining" the update functions of concurrent calls will be combined to one view transition (all calls that arrive before the new state is captured) or in followup transitions for all new calls arriving later. In this later case, not all buffered
+	updates might be executed at once: after `maxUpdateDuration` milliseconds the function will stop executing updates and animate the ones that have been executed so far. The remainders will automatically be covered by consecutive batches.
 
 	You can crank up the speed of running animations by setting "speedUpWhenChained" to > 1.
 */
@@ -58,40 +63,40 @@ export function mayStartViewTransition(
 		collisionBehavior = 'skipOld',
 		speedUpWhenChained = 1,
 		respectReducedMotion = true,
+		maxUpdateDuration = 250,
 	} = extensions;
 
-	const update = (param instanceof Function ? param : param?.update) ?? (() => { });
+	const update = (param instanceof Function ? param : param?.update) ?? (() => {});
 	const types = param instanceof Function ? [] : param?.types;
+
+	if (collisionBehavior === 'skipNew' && currentViewTransition && !updating) {
+		return fakeViewTransition(update, types);
+	}
 
 	const transition = chain(update, types ?? [], {
 		collisionBehavior,
 		speedUpWhenChained,
 		respectReducedMotion,
+		maxUpdateDuration,
 	});
 	if (collisionBehavior === 'skipOld') {
 		currentViewTransition?.skipTransition();
 	}
-
 	if (!currentViewTransition) batch();
-
 	return transition;
 
 	function batch() {
-		currentViewTransition = startViewTransition(
-			scope,
-			unchainUpdates,
-			[],
-			chained[0].extensions.respectReducedMotion
-		);
+		currentViewTransition = startViewTransition(scope, chained[0].extensions.respectReducedMotion);
 
 		currentViewTransition.ready.then(
 			() => updated.forEach((update) => update.readyResolve()),
-			() => updated.forEach((update) =>  update.readyReject())
+			() => updated.forEach((update) => update.readyReject())
 		);
 		currentViewTransition.finished
 			.then(
 				() => updated.forEach((update) => update.finishResolve()),
-				() => updated.forEach((update) => update.finishReject()))
+				() => updated.forEach((update) => update.finishReject())
+			)
 			.finally(() => {
 				updated.length = 0;
 				currentViewTransition = undefined;
@@ -101,36 +106,52 @@ export function mayStartViewTransition(
 }
 
 // This function can be called even if the browser does not support view transitions.
-// On browsers without native support -- or if motion should be reduced -- it will run the update callback, ignore the types, and won't start animations.
+// On browsers without native support -- or if motion should be reduced --
+// it will run the update callback, won't start animations, but return the promises.
+//
 // With native support it will call the API function.
 // If the native function can not deal with types, they are silently ignored
 function startViewTransition(
 	scope: Document | HTMLElement,
-	update: () => void | Promise<void>,
-	types: string[] | Set<string>,
 	respectReducedMotion = true
 ): ViewTransition {
+	let types = new Set<string>();
+	chained.forEach((call) => call.types.forEach((t) => types.add(t)));
+	const update = unchainUpdates;
+	let transition;
+
 	const reducedMotion =
 		respectReducedMotion && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
+	updating = true;
 	if (nativeSupport === 'none' || reducedMotion) {
-		return fallback(update, types);
+		transition = fakeViewTransition(update, types);
+	} else {
+		if (nativeSupport === 'partial') {
+			// @ts-expect-error
+			transition = scope.startViewTransition(update);
+		} else {
+			// @ts-expect-error
+			transition = scope.startViewTransition({ update, types });
+		}
 	}
 
-	if (nativeSupport === 'partial') {
-		// @ts-expect-error
-		return scope.startViewTransition(update);
-	}
-
-	// @ts-expect-error
-	return scope.startViewTransition({ update, types });
+	types = transition.types ?? types;
+	chained.forEach((call) => (call.types = types));
+	// ignore update errors in unchainUpdates
+	// on the top level, they are only thrown to skip the transition
+	transition.updateCallbackDone.then(
+		() => {},
+		(e: any) => {
+			e;
+		}
+	);
+	return transition;
 }
 
-function fallback(
-	update: UpdateCallback = () => { },
+export function fakeViewTransition(
+	update: UpdateCallback = () => {},
 	types: string[] | Set<string> = []
 ): ViewTransition {
-
 	const updateCallbackDone = new Promise<void>(async (resolve, reject) => {
 		try {
 			await Promise.resolve();
@@ -142,19 +163,19 @@ function fallback(
 	});
 	const ready = new Promise<void>((res) => updateCallbackDone.then(res, res));
 	const finished = new Promise<void>((res) => ready.then(res, res));
-
+	types.forEach((t) => currentViewTransition?.types.add(t));
 	return {
 		updateCallbackDone,
 		ready,
 		finished,
-		skipTransition: () => { },
-		types: new Set(types),
+		skipTransition: () => {},
+		types: currentViewTransition ? currentViewTransition.types : new Set(types),
 	};
 }
 
 function chain(
-	update: UpdateCallback = () => { },
-	types: string[] | Set<string>,
+	update: UpdateCallback = () => {},
+	types: string[] | Set<string> = [],
 	extensions: StartViewTransitionExtensions
 ): ExtendedViewTransition {
 	let updateResolve, updateReject, readyResolve, readyReject, finishResolve, finishReject;
@@ -165,6 +186,8 @@ function chain(
 	const ready = new Promise<void>((res, rej) => ((readyResolve = res), (readyReject = rej)));
 	const finished = new Promise<void>((res, rej) => ((finishResolve = res), (finishReject = rej)));
 	let skipped = false;
+	types.forEach((t) => currentViewTransition?.types.add(t));
+
 	const transition = {
 		chained: true,
 		updateResolve,
@@ -184,7 +207,7 @@ function chain(
 			return skipped;
 		},
 		update,
-		types,
+		types: currentViewTransition ? currentViewTransition.types : new Set(types),
 	} as unknown as ExtendedViewTransition;
 
 	chained.push(transition);
@@ -202,17 +225,17 @@ function chain(
 async function unchainUpdates(): Promise<void> {
 	let failed = false;
 	let executed = 0;
+	let longEnough = false;
 
 	const start = Date.now();
-
-
-	while (chained.length > 0 && Date.now() - start < 100) {
+	updating = true;
+	while (chained.length > 0 && !longEnough) {
 		const call = chained.shift()!;
-
+		longEnough = Date.now() - start >= call.extensions.maxUpdateDuration!;
 		++executed;
 		updated.push(call);
 		if (call.types) {
-			call.types.forEach((t) =>currentViewTransition!.types.add(t));
+			call.types.forEach((t) => currentViewTransition!.types.add(t));
 		}
 		try {
 			call.update === undefined || (await call.update());
@@ -231,5 +254,6 @@ async function unchainUpdates(): Promise<void> {
 			currentViewTransition!.skipTransition();
 		}
 	}
-	return Promise[failed ? 'reject' : 'resolve']();
+	updating = false;
+	if (failed) throw new Error('(chained) update failed');
 }
