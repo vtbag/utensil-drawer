@@ -1,5 +1,12 @@
 # @vtbag/utensil-drawer
 
+## 1.2.6
+
+### Patch Changes
+
+- 1c14481: You can now configure the maxUpdateDuration that limits the size of update batches in chaining mode.
+- 1c14481: Adds "skipNew" as a new collisionBahavior.
+
 ## 1.2.5 - 2025-05-07
 
 ### Patch Changes
