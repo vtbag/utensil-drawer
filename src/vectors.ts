@@ -1,3 +1,5 @@
+import { getCurrentViewTransition } from "./may-start-view-transition";
+
 export type Inst = {
 	pattern: string;
 	props: string[];
@@ -8,7 +10,7 @@ type Params = {
 	height: string;
 	matrix: DOMMatrixReadOnly;
 };
-
+let lastViewTransitionObject: ViewTransition | undefined = undefined;
 /*
 	Specs is a comma separated list of instructions that tell the function what pseudo properties to set.
 	An instruction consists of a regular expression followed by a space separated list of property names.
@@ -21,7 +23,10 @@ export function setVectors(
 	instructions: Inst[] = [{ pattern: '.*', props: ['x', 'y', 'width', 'height'] }],
 	where: 'pseudo' | 'root' | 'both' = 'both'
 ): void {
+
 	const styles: string[] = [];
+	if (lastViewTransitionObject !== undefined && lastViewTransitionObject === getCurrentViewTransition()) return; // prevent Safari from getting confused
+	lastViewTransitionObject = getCurrentViewTransition();
 	document.body.getBoundingClientRect(); // force reflow for Safari
 	document.getAnimations().forEach((animation: any) => {
 		if (!animation.animationName?.startsWith('-ua-view-transition-group')) return;
