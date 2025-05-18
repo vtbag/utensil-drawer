@@ -1,4 +1,4 @@
-import { getCurrentViewTransition } from "./may-start-view-transition";
+import { getCurrentViewTransition } from './may-start-view-transition';
 
 export type Inst = {
 	pattern: string;
@@ -23,9 +23,12 @@ export function setVectors(
 	instructions: Inst[] = [{ pattern: '.*', props: ['x', 'y', 'width', 'height'] }],
 	where: 'pseudo' | 'root' | 'both' = 'both'
 ): void {
-
 	const styles: string[] = [];
-	if (lastViewTransitionObject !== undefined && lastViewTransitionObject === getCurrentViewTransition()) return; // prevent Safari from getting confused
+	if (
+		lastViewTransitionObject !== undefined &&
+		lastViewTransitionObject === getCurrentViewTransition()
+	)
+		return; // prevent Safari from getting confused
 	lastViewTransitionObject = getCurrentViewTransition();
 	document.body.getBoundingClientRect(); // force reflow for Safari
 	document.getAnimations().forEach((animation: any) => {
