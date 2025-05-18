@@ -26,6 +26,8 @@ export function nativeViewTransitionSupport() {
 type AddProperty<T, K extends string, V> = T & { [P in K]: V };
 
 let currentViewTransition: ViewTransition | undefined;
+export const getCurrentViewTransition = ()=> currentViewTransition;
+
 let updating = false;
 const chained: ExtendedViewTransition[] = [];
 const updated: ExtendedViewTransition[] = [];
