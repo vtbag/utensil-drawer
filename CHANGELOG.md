@@ -1,5 +1,12 @@
 # @vtbag/utensil-drawer
 
+## 1.2.7 2025-05-18
+
+### Patch Changes
+
+- 8b4716c: may-start-view-transition now also exports getCurrentViewTransition() to access the global view transition object
+- 0284511: Prevents an incompatibility between Chromium and Safari when setVector is called twice inside the same view transition, which led Safari to find no verctors at all.
+
 ## 1.2.6 - 2025-05-13
 
 ### Patch Changes
