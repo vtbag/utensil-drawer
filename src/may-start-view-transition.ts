@@ -118,7 +118,7 @@ function startViewTransition(
 	respectReducedMotion = true
 ): ViewTransition {
 	let types = new Set<string>();
-	chained.forEach((call) => call.types.forEach((t) => types.add(t)));
+	chained.forEach((call) => call.types?.forEach((t) => types.add(t)));
 	const update = unchainUpdates;
 	let transition;
 
@@ -165,7 +165,7 @@ export function createViewTransitionSurrogate(
 	});
 	const ready = new Promise<void>((res) => updateCallbackDone.then(res, res));
 	const finished = new Promise<void>((res) => ready.then(res, res));
-	types.forEach((t) => currentViewTransition?.types.add(t));
+	types?.forEach((t) => currentViewTransition?.types?.add(t));
 	return {
 		updateCallbackDone,
 		ready,
@@ -188,7 +188,7 @@ function chain(
 	const ready = new Promise<void>((res, rej) => ((readyResolve = res), (readyReject = rej)));
 	const finished = new Promise<void>((res, rej) => ((finishResolve = res), (finishReject = rej)));
 	let skipped = false;
-	types.forEach((t) => currentViewTransition?.types.add(t));
+	types?.forEach((t) => currentViewTransition?.types?.add(t));
 
 	const transition = {
 		chained: true,
@@ -237,7 +237,7 @@ async function unchainUpdates(): Promise<void> {
 		++executed;
 		updated.push(call);
 		if (call.types) {
-			call.types.forEach((t) => currentViewTransition!.types.add(t));
+			call.types.forEach((t) => currentViewTransition!.types?.add(t));
 		}
 		try {
 			call.update === undefined || (await call.update());
