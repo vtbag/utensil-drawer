@@ -8,7 +8,7 @@ export interface StartViewTransitionExtensions {
 let nativeSupport = 'none';
 if (document.startViewTransition) {
 	try {
-		document.startViewTransition({ update: () => {}, types: [] }).skipTransition();
+		document.startViewTransition({ update: () => { }, types: [] }).skipTransition();
 		nativeSupport = 'full';
 	} catch (e) {
 		nativeSupport = 'partial';
@@ -68,7 +68,7 @@ export function mayStartViewTransition(
 		maxUpdateDuration = 250,
 	} = extensions;
 
-	const update = (param instanceof Function ? param : param?.update) ?? (() => {});
+	const update = (param instanceof Function ? param : param?.update) ?? (() => { });
 	const types = param instanceof Function ? [] : param?.types;
 
 	if (collisionBehavior === 'skipNew' && currentViewTransition && !updating) {
@@ -92,13 +92,12 @@ export function mayStartViewTransition(
 
 		currentViewTransition.ready.then(
 			() => updated.forEach((update) => update.readyResolve()),
-			() => updated.forEach((update) => update.readyReject())
+			(e) => updated.forEach((update) => update.readyReject(e))
 		);
-		currentViewTransition.finished
-			.then(
-				() => updated.forEach((update) => update.finishResolve()),
-				() => updated.forEach((update) => update.finishReject())
-			)
+		currentViewTransition.finished.then(
+			() => updated.forEach((update) => update.finishResolve()),
+			(e) => updated.forEach((update) => update.finishReject(e))
+		)
 			.finally(() => {
 				updated.length = 0;
 				currentViewTransition = undefined;
@@ -142,7 +141,7 @@ function startViewTransition(
 	// ignore update errors in unchainUpdates
 	// on the top level, they are only thrown to skip the transition
 	transition.updateCallbackDone.then(
-		() => {},
+		() => { },
 		(e: any) => {
 			e;
 		}
@@ -151,7 +150,7 @@ function startViewTransition(
 }
 
 export function createViewTransitionSurrogate(
-	update: UpdateCallback = () => {},
+	update: UpdateCallback = () => { },
 	types: string[] | Set<string> = []
 ): ViewTransition {
 	const updateCallbackDone = new Promise<void>(async (resolve, reject) => {
@@ -170,13 +169,13 @@ export function createViewTransitionSurrogate(
 		updateCallbackDone,
 		ready,
 		finished,
-		skipTransition: () => {},
+		skipTransition: () => { },
 		types: currentViewTransition ? currentViewTransition.types : new Set(types),
 	};
 }
 
 function chain(
-	update: UpdateCallback = () => {},
+	update: UpdateCallback = () => { },
 	types: string[] | Set<string> = [],
 	extensions: StartViewTransitionExtensions
 ): ExtendedViewTransition {
