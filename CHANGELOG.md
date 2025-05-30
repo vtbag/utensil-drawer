@@ -1,6 +1,6 @@
 # @vtbag/utensil-drawer
 
-## 1.2.8
+## 1.2.8 - 2025-05-30
 
 ### Patch Changes
 
@@ -8,7 +8,7 @@
 - 3ce9a61: Fixes a bug where errors had not been passed to reject callbacks.
 - fee8cf4: Adds a "never" option to mayStartViewTransition()'s collisionBehavior to switch off animation (e.g. for debugging)
 
-## 1.2.7 2025-05-18
+## 1.2.7 - 2025-05-18
 
 ### Patch Changes
 
