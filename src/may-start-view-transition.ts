@@ -1,6 +1,6 @@
 export interface StartViewTransitionExtensions {
 	respectReducedMotion?: boolean; // default is true
-	collisionBehavior?: 'skipOld' | 'chaining' | 'skipNew'; // default is "skipOld"
+	collisionBehavior?: 'skipOld' | 'chaining' | 'skipNew' | 'never'; // default is "skipOld"
 	speedUpWhenChained?: number; // default is 1.0
 	maxUpdateDuration?: number; // default is 250
 }
@@ -8,7 +8,7 @@ export interface StartViewTransitionExtensions {
 let nativeSupport = 'none';
 if (document.startViewTransition) {
 	try {
-		document.startViewTransition({ update: () => { }, types: [] }).skipTransition();
+		document.startViewTransition({ update: () => {}, types: [] }).skipTransition();
 		nativeSupport = 'full';
 	} catch (e) {
 		nativeSupport = 'partial';
@@ -68,10 +68,13 @@ export function mayStartViewTransition(
 		maxUpdateDuration = 250,
 	} = extensions;
 
-	const update = (param instanceof Function ? param : param?.update) ?? (() => { });
+	const update = (param instanceof Function ? param : param?.update) ?? (() => {});
 	const types = param instanceof Function ? [] : param?.types;
 
-	if (collisionBehavior === 'skipNew' && currentViewTransition && !updating) {
+	if (
+		(collisionBehavior === 'skipNew' && currentViewTransition && !updating) ||
+		collisionBehavior === 'never'
+	) {
 		return createViewTransitionSurrogate(update, types);
 	}
 
@@ -94,10 +97,11 @@ export function mayStartViewTransition(
 			() => updated.forEach((update) => update.readyResolve()),
 			(e) => updated.forEach((update) => update.readyReject(e))
 		);
-		currentViewTransition.finished.then(
-			() => updated.forEach((update) => update.finishResolve()),
-			(e) => updated.forEach((update) => update.finishReject(e))
-		)
+		currentViewTransition.finished
+			.then(
+				() => updated.forEach((update) => update.finishResolve()),
+				(e) => updated.forEach((update) => update.finishReject(e))
+			)
 			.finally(() => {
 				updated.length = 0;
 				currentViewTransition = undefined;
@@ -141,7 +145,7 @@ function startViewTransition(
 	// ignore update errors in unchainUpdates
 	// on the top level, they are only thrown to skip the transition
 	transition.updateCallbackDone.then(
-		() => { },
+		() => {},
 		(e: any) => {
 			e;
 		}
@@ -150,7 +154,7 @@ function startViewTransition(
 }
 
 export function createViewTransitionSurrogate(
-	update: UpdateCallback = () => { },
+	update: UpdateCallback = () => {},
 	types: string[] | Set<string> = []
 ): ViewTransition {
 	const updateCallbackDone = new Promise<void>(async (resolve, reject) => {
@@ -169,13 +173,13 @@ export function createViewTransitionSurrogate(
 		updateCallbackDone,
 		ready,
 		finished,
-		skipTransition: () => { },
+		skipTransition: () => {},
 		types: currentViewTransition ? currentViewTransition.types : new Set(types),
 	};
 }
 
 function chain(
-	update: UpdateCallback = () => { },
+	update: UpdateCallback = () => {},
 	types: string[] | Set<string> = [],
 	extensions: StartViewTransitionExtensions
 ): ExtendedViewTransition {
