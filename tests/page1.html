@@ -6,25 +6,129 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 	<title>Page 1</title>
+	<style>
+		::view-transition-group(*) {
+			animation-duration: 0.1s;
+		}
+	</style>
 	<script type="module">
-		import { mayStartViewTransition } from "/may-start-view-transition.js";
-		document.querySelector("button").addEventListener("click", async () => {
-			const viewTransition = mayStartViewTransition(async () => {
-				console.log("test update1");
-				await new Promise(resolve => setTimeout(resolve, 100));
-				console.log("test update2");
-			});
-			console.log("test start");
+		import { mayStartViewTransition, getCurrentViewTransition } from "/may-start-view-transition2.js";
+
+		const listTypes = (t = getCurrentViewTransition()) => {
+			return [...(t.types ?? [])].reduce((a, b) => a + " " + b, "");
+		};
+		const update1 = async () => {
+			console.log("test update1", listTypes());
+			await new Promise(resolve => setTimeout(resolve, 50));
+			console.log("test update1b");
+		};
+		const update2 = async () => {
+			console.log("test update2", listTypes());
+			await new Promise(resolve => setTimeout(resolve, 100));
+			console.log("test update2b");
+		};
+		const update3 = async () => {
+			console.log("test update3", listTypes());
+			await new Promise(resolve => setTimeout(resolve, 100));
+			console.log("test update3b");
+		};
+
+		const attach = (viewTransition) => {
 			viewTransition.updateCallbackDone.then(() => console.log("test done"), e => console.log("test update error", e));
 			viewTransition.ready.then(() => console.log("test", document.getAnimations()[0]?.effect.pseudoElement), e => console.log("test ready error", e));
 			viewTransition.finished.then(() => console.log("test finished"), e => console.log("test finished error", e));
-		})
+		};
+
+		document.querySelector("#b1").addEventListener("click", async () => {
+			const viewTransition = mayStartViewTransition(update1);
+			console.log("test start");
+			attach(viewTransition);
+		});
+
+		document.querySelector("#b2").addEventListener("click", async () => {
+			const viewTransition1 = mayStartViewTransition({ update: update1, types: ["hi"] });
+			attach(viewTransition1);
+			console.log("test ", viewTransition1 === getCurrentViewTransition(), listTypes());
+
+			const viewTransition2 = mayStartViewTransition({ update: update2, types: ["ho"] });
+			attach(viewTransition2);
+			console.log("test ", viewTransition2 !== viewTransition1, listTypes());
+		});
+		document.querySelector("#b3").addEventListener("click", async () => {
+			const viewTransition1 = mayStartViewTransition({ update: update1, types: ["hi"] });
+			attach(viewTransition1);
+			console.log("test ", viewTransition1 === getCurrentViewTransition(), listTypes());
+
+			const viewTransition2 = mayStartViewTransition({ update: update2, types: ["ho"] }, { collisionBehavior: "chaining" });
+			attach(viewTransition2);
+			console.log("test ", viewTransition2 === viewTransition1, listTypes());
+		});
+
+		document.querySelector("#b4").addEventListener("click", async () => {
+			const viewTransition1 = mayStartViewTransition({ update: update1, types: ["hi"] });
+			attach(viewTransition1);
+			console.log("test ", viewTransition1 === getCurrentViewTransition(), listTypes());
+
+			for (let j = 0; j < 1500000000; j++);
+			const viewTransition2 = mayStartViewTransition({ update: update2, types: ["ho"] }, { collisionBehavior: "chaining" });
+			attach(viewTransition2);
+			console.log("test ", viewTransition2 === viewTransition1, listTypes());
+
+		});
+
+		document.querySelector("#b5").addEventListener("click", async () => {
+
+			let viewTransition1;
+
+
+			setTimeout(() => {
+				viewTransition1 = mayStartViewTransition({ update: update1, types: ["hi"] });
+				attach(viewTransition1);
+				console.log("test ", viewTransition1 === getCurrentViewTransition(), listTypes());
+			}, 0);
+
+			setTimeout(() => {
+				const viewTransition2 = mayStartViewTransition({ update: update2, types: ["ho"] }, { collisionBehavior: "chaining" });
+				attach(viewTransition2);
+				console.log("test ", viewTransition2 === viewTransition1, listTypes());
+			}, 0);
+
+		});
+		document.querySelector("#b6	").addEventListener("click", async () => {
+			const viewTransition1 = mayStartViewTransition({ update: update1, types: ["hi"] });
+			attach(viewTransition1);
+			console.log("test ", viewTransition1 === getCurrentViewTransition(), listTypes());
+
+			await new Promise(resolve => setTimeout(resolve, 50));
+			const viewTransition2 = mayStartViewTransition({ update: update2, types: ["ho"] }, { collisionBehavior: "chaining" });
+			attach(viewTransition2);
+			console.log("test ", viewTransition2 !== viewTransition1, listTypes(viewTransition2));
+			viewTransition2.types.add("he");
+
+			await new Promise(resolve => setTimeout(resolve, 50));
+			const viewTransition3 = mayStartViewTransition({ update: update3, types: ["ha"] }, { collisionBehavior: "chaining" });
+			attach(viewTransition3);
+			console.log("test ", viewTransition3 !== viewTransition2, listTypes(viewTransition3));
+			viewTransition3.types.add("hu");
+
+			viewTransition2.ready.then(() => {
+				getCurrentViewTransition().types.add("x2");
+				console.log("test ready2", listTypes(viewTransition2));
+			});
+		});
 	</script>
+
 </head>
 
 <body>
+
 	<h1>Page 1</h1>
-	<button>Click Me!</button>
+	<button id="b1">Single call</button>
+	<button id="b2">Second skips first</button>
+	<button id="b3">Two chained calls</button>
+	<button id="b4">Busy wait before vt2</button>
+	<button id="b5">two async calls</button>
+	<button id="b6">three async calls</button>
 </body>
 
 </html>
