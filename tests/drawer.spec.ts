@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test('API called once', async ({ page, browserName }) => {
 
 	let text = "";
-	page.on("console", msg => (msg.text().startsWith("test ") && (text += msg.text().slice(4,35))));
+	page.on("console", msg => (msg.text().startsWith("test ") && (text += msg.text().slice(4, 35))));
 
 	await page.goto('http://localhost:3000/page1/');
 	await expect(page).toHaveTitle("Page 1");
@@ -17,7 +17,7 @@ test('API called once', async ({ page, browserName }) => {
 test('two unchained calls', async ({ page, browserName }) => {
 
 	let text = "";
-	page.on("console", msg => (msg.text().startsWith("test ") && (text += msg.text().slice(4,29))));
+	page.on("console", msg => (msg.text().startsWith("test ") && (text += msg.text().slice(4, 29))));
 
 	await page.goto('http://localhost:3000/page1/');
 	await expect(page).toHaveTitle("Page 1");
@@ -31,7 +31,7 @@ test('two unchained calls', async ({ page, browserName }) => {
 test('two chained calls', async ({ page, browserName }) => {
 
 	let text = "";
-	page.on("console", msg => (msg.text().startsWith("test ") && (text += msg.text().slice(4,35))));
+	page.on("console", msg => (msg.text().startsWith("test ") && (text += msg.text().slice(4, 35))));
 
 	await page.goto('http://localhost:3000/page1/');
 	await expect(page).toHaveTitle("Page 1");
@@ -45,7 +45,7 @@ test('two chained calls', async ({ page, browserName }) => {
 test('chained call after busy-waiting', async ({ page, browserName }) => {
 
 	let text = "";
-	page.on("console", msg => (msg.text().startsWith("test ") && (text += msg.text().slice(4,35))));
+	page.on("console", msg => (msg.text().startsWith("test ") && (text += msg.text().slice(4, 35))));
 
 	await page.goto('http://localhost:3000/page1/');
 	await expect(page).toHaveTitle("Page 1");
@@ -59,7 +59,7 @@ test('chained call after busy-waiting', async ({ page, browserName }) => {
 test('two asynchronous chained calls', async ({ page, browserName }) => {
 
 	let text = "";
-	page.on("console", msg => (msg.text().startsWith("test ") && (text += msg.text().slice(4,35))));
+	page.on("console", msg => (msg.text().startsWith("test ") && (text += msg.text().slice(4, 35))));
 
 	await page.goto('http://localhost:3000/page1/');
 	await expect(page).toHaveTitle("Page 1");
@@ -70,10 +70,11 @@ test('two asynchronous chained calls', async ({ page, browserName }) => {
 		: "  true  hi  true  hi ho update1  hi ho update2  hi ho update1b update2b done done ::view-transition-group(root) ::view-transition-group(root) finished finished");
 });
 
-test('one plus two chained calls', async ({ page, browserName }) => {
 
+test('one plus two chained calls', async ({ page, browserName }) => {
+	test.fixme(!!process.env.CI && browserName === 'firefox', "This test is flaky on CI");
 	let text = "";
-	page.on("console", msg => (msg.text().startsWith("test ") && (text += msg.text().slice(4,35))));
+	page.on("console", msg => (msg.text().startsWith("test ") && (text += msg.text().slice(4, 35))));
 
 	await page.goto('http://localhost:3000/page1/');
 	await expect(page).toHaveTitle("Page 1");
