@@ -3,11 +3,12 @@ export interface StartViewTransitionExtensions {
 	collisionBehavior?: 'skipOld' | 'chaining' | 'skipNew' | 'never'; // default is "skipOld"
 	speedUpWhenChained?: number; // default is 1.0
 }
+const collisionBehaviors = ['skipOld', 'chaining', 'skipNew', 'never'];
 
 let nativeSupport = 'none';
 if (document.startViewTransition) {
 	try {
-		document.startViewTransition({ update: () => {}, types: [] }).skipTransition();
+		document.startViewTransition({ update: () => { }, types: [] }).skipTransition();
 		nativeSupport = 'full';
 	} catch (e) {
 		nativeSupport = 'partial';
@@ -58,15 +59,21 @@ export function mayStartViewTransition(
 	param?: StartViewTransitionParameter | UpdateCallback,
 	ext: StartViewTransitionExtensions = {}
 ): ViewTransition {
-	const {
+	let {
 		collisionBehavior = 'skipOld',
 		speedUpWhenChained = 1,
 		respectReducedMotion = true,
 	} = ext;
 
+
+	collisionBehaviors.includes(collisionBehavior)
+		|| (console.warn(
+			`Invalid collisionBehavior "${collisionBehavior}" specified, using "skipOld" instead`),
+			(collisionBehavior = "skipOld"));
+
 	const extensions = { collisionBehavior, speedUpWhenChained, respectReducedMotion };
 
-	const update = (param instanceof Function ? param : param?.update) ?? (() => {});
+	const update = (param instanceof Function ? param : param?.update) ?? (() => { });
 	const types = new Set(param instanceof Function ? [] : (param?.types ?? []));
 	const reduceMotion =
 		respectReducedMotion && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -210,7 +217,7 @@ export function createViewTransitionSurrogate(types: Set<string>): ViewTransitio
 		updateCallbackDone,
 		ready,
 		finished,
-		skipTransition: () => {},
+		skipTransition: () => { },
 		types,
 	} as ViewTransition;
 }
