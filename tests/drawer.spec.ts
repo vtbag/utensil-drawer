@@ -1,6 +1,8 @@
 import { test, expect } from '@playwright/test';
 
-test.skip('API called once', async ({ page, browserName }) => {
+test.skip(!!process.env.CI, 'Skip this test on CI');
+
+test('API called once', async ({ page, browserName }) => {
 
 	let text = "";
 	page.on("console", msg => (msg.text().startsWith("test ") && (text += msg.text().slice(4, 35))));
@@ -14,7 +16,7 @@ test.skip('API called once', async ({ page, browserName }) => {
 		: " start update1  update1b done ::view-transition-group(root) finished");
 });
 
-test.skip('two unchained calls', async ({ page, browserName }) => {
+test('two unchained calls', async ({ page, browserName }) => {
 
 	let text = "";
 	page.on("console", msg => (msg.text().startsWith("test ") && (text += msg.text().slice(4, 29))));
@@ -28,7 +30,7 @@ test.skip('two unchained calls', async ({ page, browserName }) => {
 		: "  true  hi  true  ho ready error AbortError:  update1  ho update2  ho update1b done finished update2b done ::view-transition-group( finished");
 });
 
-test.skip('two chained calls', async ({ page, browserName }) => {
+test('two chained calls', async ({ page, browserName }) => {
 
 	let text = "";
 	page.on("console", msg => (msg.text().startsWith("test ") && (text += msg.text().slice(4, 35))));
@@ -42,7 +44,7 @@ test.skip('two chained calls', async ({ page, browserName }) => {
 		: "  true  hi  true  hi ho update1  hi ho update2  hi ho update1b update2b done done ::view-transition-group(root) ::view-transition-group(root) finished finished");
 });
 
-test.skip('chained call after busy-waiting', async ({ page, browserName }) => {
+test('chained call after busy-waiting', async ({ page, browserName }) => {
 
 	let text = "";
 	page.on("console", msg => (msg.text().startsWith("test ") && (text += msg.text().slice(4, 35))));
@@ -56,7 +58,7 @@ test.skip('chained call after busy-waiting', async ({ page, browserName }) => {
 		: "  true  hi  true  hi ho update1  hi ho update2  hi ho update1b update2b done done ::view-transition-group(root) ::view-transition-group(root) finished finished");
 });
 
-test.skip('two asynchronous chained calls', async ({ page, browserName }) => {
+test('two asynchronous chained calls', async ({ page, browserName }) => {
 
 	let text = "";
 	page.on("console", msg => (msg.text().startsWith("test ") && (text += msg.text().slice(4, 35))));
@@ -71,7 +73,7 @@ test.skip('two asynchronous chained calls', async ({ page, browserName }) => {
 });
 
 
-test.skip('one plus two chained calls', async ({ page, browserName }) => {
+test('one plus two chained calls', async ({ page, browserName }) => {
 	test.fixme(!!process.env.CI && browserName === 'firefox', "This test is flaky on CI");
 	let text = "";
 	page.on("console", msg => (msg.text().startsWith("test ") && (text += msg.text().slice(4, 35))));
