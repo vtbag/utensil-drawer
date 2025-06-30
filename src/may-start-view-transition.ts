@@ -1,9 +1,9 @@
 export interface StartViewTransitionExtensions {
 	respectReducedMotion?: boolean; // default is true
-	collisionBehavior?: 'skipOld' | 'chaining' | 'skipNew' | 'never'; // default is "skipOld"
+	collisionBehavior?: 'skipOld' | 'chaining' | 'chaining-only' | 'skipNew' | 'never'; // default is "skipOld"
 	speedUpWhenChained?: number; // default is 1.0
 }
-const collisionBehaviors = ['skipOld', 'chaining', 'skipNew', 'never'];
+const collisionBehaviors = ['skipOld', 'chaining', 'chaining-only', 'skipNew', 'never'];
 
 let nativeSupport = 'none';
 if (document.startViewTransition) {
@@ -30,6 +30,7 @@ let open: number | undefined = undefined;
 let clash: boolean = false;
 
 const close = () => {
+	cancelAnimationFrame(open!);
 	open = undefined;
 };
 const chained: ViewTransitionRequest[] = [];
@@ -50,8 +51,8 @@ interface ViewTransitionRequest {
 	By default ("skipOld") behaves like the API function where new invocations skip active ones.
 	This can be set to "skipNew", where new invocations are skipped if another one is still active.
 	'never' will behave as if view transitions are not supported at all.
-	With "chaining" the update functions of concurrent calls will be combined to one view transition (all calls that arrive before the new state is captured) or in followup transitions for all new calls arriving later.
-	In this later case, not all buffered updates might be executed at once: after `maxUpdateDuration` milliseconds the function will stop executing updates and animate the ones that have been executed so far. The remainders will automatically be covered by consecutive batches.
+	With "chaining" the update functions of concurrent calls will be combined to one view transition (all calls that arrive before the old state is captured) or in followup transitions for all new calls arriving later.
+	You can suppress combining calls that arrive before the old state is captured by setting "collisionBehavior" to "chaining-only".
 
 	You can crank up the speed of running animations by setting "speedUpWhenChained" to > 1.
 */
@@ -104,7 +105,7 @@ export function mayStartViewTransition(
 				});
 		});
 	}
-	if (open) {
+	if (open && (collisionBehavior !== 'chaining-only' || updates.length === 0)) {
 		types.forEach((t) => currentViewTransition!.types.add(t));
 		updates.push(update);
 		return currentViewTransition;
