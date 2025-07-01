@@ -77,11 +77,11 @@ export function setVectors(
 				styles.push(`	--vtbag-vector-${group}-from-y: ${from.matrix.f}px;
 	--vtbag-vector-${group}-to-y: ${to.matrix.f}px;`);
 			emit.includes('width') &&
-				styles.push(`	--vtbag-vector-${group}-from-width: ${from.width}px;
-	--vtbag-vector-${group}-to-width: ${to.width}px;`);
+				styles.push(`	--vtbag-vector-${group}-from-width: ${from.width};
+	--vtbag-vector-${group}-to-width: ${to.width};`);
 			emit.includes('height') &&
-				styles.push(`	--vtbag-vector-${group}-from-width: ${from.height}px;
-	--vtbag-vector-${group}-to-width: ${to.height}px;`);
+				styles.push(`	--vtbag-vector-${group}-from-width: ${from.height};
+	--vtbag-vector-${group}-to-width: ${to.height};`);
 			styles.push('}');
 		}
 		if (where === 'pseudo' || where === 'both') {
@@ -93,11 +93,11 @@ export function setVectors(
 				styles.push(`	--vtbag-vector-from-y: ${from.matrix.f}px;
 	--vtbag-vector-to-y: ${to.matrix.f}px;`);
 			emit.includes('width') &&
-				styles.push(`	--vtbag-vector-from-width: ${from.width}px;
-	--vtbag-vector-to-width: ${to.width}px;`);
+				styles.push(`	--vtbag-vector-from-width: ${from.width};
+	--vtbag-vector-to-width: ${to.width};`);
 			emit.includes('height') &&
-				styles.push(`	--vtbag-vector-from-height: ${from.height}px;
-	--vtbag-vector-to-height: ${to.height}px;`);
+				styles.push(`	--vtbag-vector-from-height: ${from.height};
+	--vtbag-vector-to-height: ${to.height};`);
 			styles.push('}');
 		}
 	});
