@@ -80,8 +80,8 @@ export function setVectors(
 				styles.push(`	--vtbag-vector-${group}-from-width: ${from.width};
 	--vtbag-vector-${group}-to-width: ${to.width};`);
 			emit.includes('height') &&
-				styles.push(`	--vtbag-vector-${group}-from-width: ${from.height};
-	--vtbag-vector-${group}-to-width: ${to.height};`);
+				styles.push(`	--vtbag-vector-${group}-from-height: ${from.height};
+	--vtbag-vector-${group}-to-height: ${to.height};`);
 			styles.push('}');
 		}
 		if (where === 'pseudo' || where === 'both') {
