@@ -1,5 +1,11 @@
 # @vtbag/utensil-drawer
 
+## 1.2.10
+
+### Patch Changes
+
+- 66ad07f: Fixes a bug where `setVectors()` didn't set `--vtbag-vector-${group}-*-height`
+
 ## 1.2.9 - 2025-07-09
 
 ### Patch Changes
