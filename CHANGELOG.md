@@ -1,5 +1,13 @@
 # @vtbag/utensil-drawer
 
+## 1.2.9
+
+### Patch Changes
+
+- c0be1c7: This release features a major rewrite of mayStartViewTransition. No intended functional changes but cleaner structure.
+- 9afddb9: adds "chaining-only" collision behavior.
+- 28c9db4: Improves parameter checking and error handling.
+
 ## 1.2.8 - 2025-05-30
 
 ### Patch Changes
