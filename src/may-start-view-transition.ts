@@ -112,9 +112,8 @@ export function mayStartViewTransition(
 	}
 	if (open && (collisionBehavior !== 'chaining-only' || updates.length === 0)) {
 		const cl = document.documentElement.classList;
-		const curr: any = surrogate
-			? undefined
-			: useTypesPolyfill === 'never'
+		const curr: any =
+			useTypesPolyfill === 'never'
 				? currentViewTransition.types
 				: useTypesPolyfill === 'always'
 					? cl
