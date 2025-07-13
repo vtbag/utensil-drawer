@@ -12,7 +12,7 @@
 		}
 	</style>
 	<script type="module">
-		import { mayStartViewTransition, getCurrentViewTransition } from "/may-start-view-transition2.js";
+		import { mayStartViewTransition, getCurrentViewTransition } from "/may-start-view-transition.js";
 
 		const listTypes = (t = getCurrentViewTransition()) => {
 			return [...(t.types ?? [])].reduce((a, b) => a + " " + b, "");
@@ -80,7 +80,6 @@
 
 			let viewTransition1;
 
-
 			setTimeout(() => {
 				viewTransition1 = mayStartViewTransition({ update: update1, types: ["hi"] });
 				attach(viewTransition1);
@@ -94,6 +93,8 @@
 			}, 0);
 
 		});
+
+
 		document.querySelector("#b6	").addEventListener("click", async () => {
 			const viewTransition1 = mayStartViewTransition({ update: update1, types: ["hi"] });
 			attach(viewTransition1);
@@ -116,6 +117,28 @@
 				console.log("test ready2", listTypes(viewTransition2));
 			});
 		});
+
+
+		document.querySelector("#b7").addEventListener("click", async () => {
+
+			let viewTransition1;
+
+			viewTransition1 = mayStartViewTransition({
+				update: async () => {
+					console.log("test update1", listTypes());
+
+					const viewTransition2 = mayStartViewTransition({ update: update2, types: ["ho"] });
+					attach(viewTransition2);
+					console.log("test ", viewTransition2 !== viewTransition1, listTypes());
+
+					await new Promise(resolve => setTimeout(resolve, 50));
+					console.log("test update1b");
+				}, types: ["hi"]
+			});
+			attach(viewTransition1);
+			console.log("test ", viewTransition1 === getCurrentViewTransition(), listTypes());
+
+		});
 	</script>
 
 </head>
@@ -129,6 +152,7 @@
 	<button id="b4">Busy wait before vt2</button>
 	<button id="b5">two async calls</button>
 	<button id="b6">three async calls</button>
+	<button id="b7">second call interrupts during update</button>
 </body>
 
 </html>
