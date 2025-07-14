@@ -12,7 +12,10 @@ Utensil Drawer: Pick the tools you need to craft the view transitions you want!
 The @vtbag website can be found at https://vtbag.dev/
 
 ## !!! News !!!
-> New `collisionBehavior` option to `mayStartViewTransition` replaces former `chaining` (experimental, breaking + bug fixing)
+
+> mayStartViewTransition() gets better and better. Not only overhauled, refactored, optimized and thoroughly tested...
+
+> ...now also supports an option that rewrites view transition types as CSS classes to the :root element! This is a first step so you can use view transition types in browsers that only support Level 1 view transitions, yet. Looking at you, Firefox. 
 
 For details see https://vtbag.dev/tools/utensil-drawer/
 
