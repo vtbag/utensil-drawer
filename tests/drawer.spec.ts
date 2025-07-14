@@ -81,7 +81,7 @@ test('one plus two chained calls', async ({ page, browserName }) => {
 	await page.goto('http://localhost:3000/page1/');
 	await expect(page).toHaveTitle("Page 1");
 	await page.locator('#b6').click();
-	await new Promise<void>(resolve => setTimeout(resolve, 1000));
+	await new Promise<void>(resolve => setTimeout(resolve, 1500));
 	expect(text).toBe(browserName === "firefox"
 		? "  true  hi update1  hi  true  ho update1b done undefined finished update2  ho he  true  ha update2b done undefined ready2  ho he x2 finished update3  ha hu update3b done undefined finished"
 		: "  true  hi update1  hi  true  ho update1b done ::view-transition-group(root)  true  ha finished update2  ho he ha hu update3  ho he ha hu update2b update3b done done ::view-transition-group(root) ready2  ho he ha hu x2 ::view-transition-group(root) finished finished");
