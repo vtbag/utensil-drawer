@@ -120,7 +120,6 @@ export function mayStartViewTransition(
 					: (currentViewTransition.types ?? cl);
 		types.forEach((t) => {
 			curr?.add(t);
-			console.log(`Adding type "${t}" to view transition`, curr === cl);
 			curr === cl && typeAttributes.add(t);
 		});
 		updates.push(update);
