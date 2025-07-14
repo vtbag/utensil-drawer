@@ -2,7 +2,6 @@
 	"name": "@vtbag/utensil-drawer",
 	"type": "module",
 	"version": "1.2.9",
-	"main": "lib/index.js",
 	"description": "Pull out just what you need to craft seamless transitions. The Utensil Drawer holds reusable functions to help you build websites with view transitions. It is a bit sparse right now, but like the one in your kitchen, it is bound to fill up over time.",
 	"sideEffects": false,
 	"files": [
@@ -37,7 +36,7 @@
 		"dev": "bin/bundle dev",
 		"build": "npm run format; bin/bundle",
 		"format": "prettier --write src | grep -v 'unchanged)$'",
-		"test": "bin/test",
+		"test": "bin/test && npx publint",
 		"changeset": "changeset",
 		"start": "npx serve --debug -l 3000 tests",
 		"release": "changeset publish"
