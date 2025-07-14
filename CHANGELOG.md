@@ -1,5 +1,13 @@
 # @vtbag/utensil-drawer
 
+## 1.2.10 - 2025-07-14
+
+### Patch Changes
+
+- bc81039: Improves implementation of mayStartViewTransiion
+- 66ad07f: Fixes a bug where `setVectors()` didn't set `--vtbag-vector-${group}-*-height`
+- bc81039: Adds the useTypesPolyfill option to mayStartViewTransition to replace view transition types with CSS classes on the :root element.
+
 ## 1.2.9 - 2025-07-09
 
 ### Patch Changes
