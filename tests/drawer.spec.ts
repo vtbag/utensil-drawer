@@ -1,7 +1,5 @@
 import { test, expect } from '@playwright/test';
 
-test.skip(!!process.env.CI, 'Skip this test on CI');
-
 test('API called once', async ({ page, browserName }) => {
 
 	let text = "";
