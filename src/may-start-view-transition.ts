@@ -1,3 +1,7 @@
+import { getTypeAttributes, polyfilledTypes } from './polyfilled-types.js';
+import { createViewTransitionProxy, SwitchableViewTransition } from './switchable-view-transition.js';
+import { createViewTransitionSurrogate } from './view-transition-surrogate.js';
+
 export interface StartViewTransitionExtensions {
 	respectReducedMotion?: boolean; // default is true
 	collisionBehavior?: 'skipOld' | 'chaining' | 'chaining-only' | 'skipNew' | 'never'; // default is "skipOld"
@@ -8,7 +12,7 @@ const collisionBehaviors = ['skipOld', 'chaining', 'chaining-only', 'skipNew', '
 let nativeSupport = 'none';
 if (document.startViewTransition) {
 	try {
-		document.startViewTransition({ update: () => {}, types: [] }).skipTransition();
+		document.startViewTransition({ update: () => { }, types: [] }).skipTransition();
 		nativeSupport = 'full';
 	} catch (e) {
 		nativeSupport = 'partial';
@@ -24,7 +28,9 @@ export function nativeViewTransitionSupport() {
 }
 
 let currentViewTransition: ViewTransition | undefined;
-export const getCurrentViewTransition = () => currentViewTransition;
+export function getCurrentViewTransition() {
+	return currentViewTransition;
+}
 
 let open: number | undefined = undefined;
 let keepLast: boolean = false;
@@ -70,7 +76,7 @@ export function mayStartViewTransition(
 		(console.warn(
 			`Invalid collisionBehavior "${collisionBehavior}" specified, using "skipOld" instead`
 		),
-		(collisionBehavior = 'skipOld'));
+			(collisionBehavior = 'skipOld'));
 
 	const extensions = {
 		collisionBehavior,
@@ -79,7 +85,7 @@ export function mayStartViewTransition(
 		useTypesPolyfill,
 	};
 
-	const update = (param instanceof Function ? param : param?.update) ?? (() => {});
+	const update = (param instanceof Function ? param : param?.update) ?? (() => { });
 	const types = new Set(param instanceof Function ? [] : (param?.types ?? []));
 	const reduceMotion =
 		respectReducedMotion && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -97,12 +103,12 @@ export function mayStartViewTransition(
 	if (!currentViewTransition || collisionBehavior === 'skipOld') {
 		keepLast = !!currentViewTransition && !!open;
 		open = requestAnimationFrame(close);
-		typeAttributes = new Set<string>();
-		currentViewTransition = surrogate
+		currentViewTransition = polyfilledTypes(surrogate
 			? createViewTransitionSurrogate(unchainUpdates)
-			: document.startViewTransition!(unchainUpdates);
+			: document.startViewTransition!(unchainUpdates),
+			useTypesPolyfill === 'always' || useTypesPolyfill !== 'never' && nativeSupport === 'partial');
 		currentViewTransition.finished.finally(() => {
-			typeAttributes.forEach((t) => document.documentElement.classList.remove(t));
+			getTypeAttributes()?.forEach((t) => document.documentElement.classList.remove(t));
 			currentViewTransition = undefined;
 			chained.splice(0, chained.length).forEach(({ update, extensions, proxy }) => {
 				mayStartViewTransition({ update, types: proxy.types }, extensions);
@@ -111,17 +117,7 @@ export function mayStartViewTransition(
 		});
 	}
 	if (open && (collisionBehavior !== 'chaining-only' || updates.length === 0)) {
-		const cl = document.documentElement.classList;
-		const curr: any =
-			useTypesPolyfill === 'never'
-				? currentViewTransition.types
-				: useTypesPolyfill === 'always'
-					? cl
-					: (currentViewTransition.types ?? cl);
-		types.forEach((t) => {
-			curr?.add(t);
-			curr === cl && typeAttributes.add(t);
-		});
+		types.forEach((t) => currentViewTransition!.types?.add(t));
 		updates.push(update);
 		return currentViewTransition;
 	}
@@ -134,120 +130,6 @@ export function mayStartViewTransition(
 		});
 	}
 	return proxy;
-}
-
-interface SwitchableViewTransition extends ViewTransition {
-	switch(): void;
-}
-interface SwitchablePromise extends Promise<void> {
-	switch(to: Promise<void>): void;
-}
-
-function createPromiseSubstitute(): SwitchablePromise {
-	const saved: any[] = [];
-	let delegate: Promise<void> | undefined;
-	const save = (kind: string, resolve: any, reject: any, callback?: any) => {
-		if (delegate) {
-			return kind === 'then' ? delegate.then(resolve, reject) : delegate.finally(callback);
-		}
-		const promise = createPromiseSubstitute();
-		saved.push({ kind, resolve, reject, callback, promise });
-		return promise;
-	};
-	return {
-		then(resolve: any, reject: any): Promise<void> {
-			return save('then', resolve, reject);
-		},
-		catch(reject: any): Promise<void> {
-			return save('then', undefined, reject);
-		},
-		finally(callback: () => void): Promise<void> {
-			return save('finally', undefined, undefined, callback);
-		},
-		switch(to: Promise<void>) {
-			if (delegate) throw new Error('Already switched to another promise');
-			saved.forEach((e) =>
-				e.promise.switch(e.kind === 'then' ? to.then(e.resolve, e.reject) : to.finally(e.callback))
-			);
-			delegate = to;
-		},
-	} as SwitchablePromise;
-}
-
-function createViewTransitionProxy(types: Set<string>): SwitchableViewTransition {
-	let delegate: ViewTransition | undefined = undefined;
-	let skipped = false;
-	return new Proxy(
-		{
-			updateCallbackDone: createPromiseSubstitute(),
-			ready: createPromiseSubstitute(),
-			finished: createPromiseSubstitute(),
-			skipTransition: () => (delegate ? delegate.skipTransition() : (skipped = true)),
-			types: new Set(types),
-			switch() {
-				if (!currentViewTransition) throw new Error('No view transition active');
-				if (delegate) throw new Error('Already switched to another view transition');
-				if (skipped) {
-					currentViewTransition?.skipTransition();
-				}
-				this.types = currentViewTransition.types ?? this.types;
-				this.updateCallbackDone.switch(currentViewTransition.updateCallbackDone);
-				this.ready.switch(currentViewTransition.ready);
-				this.finished.switch(currentViewTransition.finished);
-				delegate = currentViewTransition;
-			},
-		},
-		{
-			get(target, prop: keyof ViewTransition): any {
-				return delegate ? delegate[prop] : target[prop];
-			},
-		}
-	);
-}
-
-export function createViewTransitionSurrogate(update: () => Promise<void>): ViewTransition {
-	let res: () => void;
-	let rej: (reason?: any) => void;
-	let readyReject: (reason?: any) => void;
-
-	const updateCallbackDone = new Promise<void>((resolve, reject) => {
-		res = resolve;
-		rej = reject;
-	});
-	let updateFailure: any = undefined;
-	requestAnimationFrame(async () => {
-		try {
-			await update();
-			res();
-		} catch (e) {
-			updateFailure = e;
-			rej(e);
-		}
-	});
-	const ready = new Promise<void>((res, rej) => {
-		readyReject = rej;
-		updateCallbackDone.then(
-			() => res(), //rej('Browser does not support View Transition API'),
-			(_) => res() //rej(err)
-		);
-	});
-	const done = (res: () => void, rej: (reason?: any) => void) =>
-		updateFailure ? rej(updateFailure) : res();
-	const finished = new Promise<void>((res, rej) =>
-		updateCallbackDone.finally(() =>
-			ready.then(
-				() => done(res, rej),
-				(e) => done(res, rej)
-			)
-		)
-	);
-	return {
-		updateCallbackDone,
-		ready,
-		finished,
-		skipTransition: () => {},
-		types: new Set<string>(),
-	} as ViewTransition;
 }
 
 async function unchainUpdates() {

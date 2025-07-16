@@ -1,6 +1,5 @@
 #! /bin/sh
 
-bin/bundle test
 if [ "$GITHUB_ACTIONS" = "true" ]; then
   npx playwright install --with-deps
 fi

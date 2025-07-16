@@ -36,7 +36,7 @@
 		"dev": "bin/bundle dev",
 		"build": "npm run format; bin/bundle",
 		"format": "prettier --write src | grep -v 'unchanged)$'",
-		"test": "bin/test && npx publint",
+		"test": "bin/bundle test && bin/test && npx publint",
 		"changeset": "changeset",
 		"start": "npx serve --debug -l 3000 tests",
 		"release": "changeset publish"

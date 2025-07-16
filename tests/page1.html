@@ -14,6 +14,7 @@
 	<script type="module">
 		import { mayStartViewTransition, getCurrentViewTransition } from "/may-start-view-transition.js";
 
+
 		const listTypes = (t = getCurrentViewTransition()) => {
 			return [...(t.types ?? [])].reduce((a, b) => a + " " + b, "");
 		};
@@ -139,6 +140,48 @@
 			console.log("test ", viewTransition1 === getCurrentViewTransition(), listTypes());
 
 		});
+
+		document.querySelector("#b8").addEventListener("click", async () => {
+			const types = ["bad", "ugly"];
+			document.documentElement.className = "good vtbag-vtt-good vtbag-vtt-ugly";
+			console.log("test", document.documentElement.className);
+			const transition = mayStartViewTransition({ types }, { useTypesPolyfill: "always" });
+			console.log("test", document.documentElement.className);
+			await transition.finished;
+			console.log("test", document.documentElement.className);
+		});
+
+		document.querySelector("#b9").addEventListener("click", async () => {
+
+			document.documentElement.className = "initial";
+			const types = [];
+			const transition1 = mayStartViewTransition({ types }, { useTypesPolyfill: "always" });
+			transition1.types.add("rc-1");
+			console.log("test", document.documentElement.className);
+
+			const transition2 = mayStartViewTransition({ types }, { useTypesPolyfill: "always", collisionBehavior: "chaining" });
+			transition2.types.add("rc-2");
+			console.log("test", transition1 === transition2, listTypes(transition2));
+
+			console.log("test", document.documentElement.className);
+
+			await transition1.ready;
+
+			const transition3 = mayStartViewTransition({ types }, { useTypesPolyfill: "always", collisionBehavior: "chaining" });
+			transition3.types.add("rc-3");
+			console.log("test", transition3 !== transition2, listTypes(transition3));
+			console.log("test", document.documentElement.className);
+
+			
+			await transition3.ready;
+			transition3.types.add("rc-4");
+			console.log("test", transition3 !== transition2, listTypes(transition3));
+			console.log("test", document.documentElement.className);
+
+			
+			await transition3.finished;
+			console.log("test", document.documentElement.className);
+		});
 	</script>
 
 </head>
@@ -153,6 +196,8 @@
 	<button id="b5">two async calls</button>
 	<button id="b6">three async calls</button>
 	<button id="b7">second call interrupts during update</button>
+	<button id="b8">basic polyfill</button>
+	<button id="b9">polyfill rc</button>
 </body>
 
 </html>
