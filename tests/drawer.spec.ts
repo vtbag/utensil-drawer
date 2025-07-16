@@ -72,7 +72,6 @@ test('two asynchronous chained calls', async ({ page, browserName }) => {
 
 
 test('one plus two chained calls', async ({ page, browserName }) => {
-	test.fixme(!!process.env.CI && browserName === 'firefox', "This test is flaky on CI");
 	let text = "";
 	page.on("console", msg => (msg.text().startsWith("test ") && (text += msg.text().slice(4, 35))));
 
