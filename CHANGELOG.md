@@ -1,5 +1,11 @@
 # @vtbag/utensil-drawer
 
+## 1.2.11
+
+### Patch Changes
+
+- abf1012: Adds a **polyfill for view tranition types** to mayStartViewTransition(). In combination with the postcss-active-view-transition-type PostCSS plugin enjoy view transition types even in browsers that do not yet support them natively.
+
 ## 1.2.10 - 2025-07-14
 
 ### Patch Changes
