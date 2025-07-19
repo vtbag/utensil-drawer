@@ -36,7 +36,8 @@ export function createViewTransitionProxy(types: Set<string>): SwitchableViewTra
 								? delegate.types!.forEach(callback, thisArg)
 								: target.forEach(callback, thisArg);
 					} else if (prop === Symbol.iterator) {
-						return () => delegate ? delegate.types![Symbol.iterator]() : target[Symbol.iterator]();
+						return () =>
+							delegate ? delegate.types![Symbol.iterator]() : target[Symbol.iterator]();
 					}
 					return target[prop as keyof Set<string>];
 				},

@@ -1,5 +1,8 @@
 import { getTypeAttributes, polyfilledTypes } from './polyfilled-types.js';
-import { createViewTransitionProxy, SwitchableViewTransition } from './switchable-view-transition.js';
+import {
+	createViewTransitionProxy,
+	SwitchableViewTransition,
+} from './switchable-view-transition.js';
 import { createViewTransitionSurrogate } from './view-transition-surrogate.js';
 
 export interface StartViewTransitionExtensions {
@@ -12,7 +15,7 @@ const collisionBehaviors = ['skipOld', 'chaining', 'chaining-only', 'skipNew', '
 let nativeSupport = 'none';
 if (document.startViewTransition) {
 	try {
-		document.startViewTransition({ update: () => { }, types: [] }).skipTransition();
+		document.startViewTransition({ update: () => {}, types: [] }).skipTransition();
 		nativeSupport = 'full';
 	} catch (e) {
 		nativeSupport = 'partial';
@@ -76,7 +79,7 @@ export function mayStartViewTransition(
 		(console.warn(
 			`Invalid collisionBehavior "${collisionBehavior}" specified, using "skipOld" instead`
 		),
-			(collisionBehavior = 'skipOld'));
+		(collisionBehavior = 'skipOld'));
 
 	const extensions = {
 		collisionBehavior,
@@ -85,7 +88,7 @@ export function mayStartViewTransition(
 		useTypesPolyfill,
 	};
 
-	const update = (param instanceof Function ? param : param?.update) ?? (() => { });
+	const update = (param instanceof Function ? param : param?.update) ?? (() => {});
 	const types = new Set(param instanceof Function ? [] : (param?.types ?? []));
 	const reduceMotion =
 		respectReducedMotion && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -103,10 +106,12 @@ export function mayStartViewTransition(
 	if (!currentViewTransition || collisionBehavior === 'skipOld') {
 		keepLast = !!currentViewTransition && !!open;
 		open = requestAnimationFrame(close);
-		currentViewTransition = polyfilledTypes(surrogate
-			? createViewTransitionSurrogate(unchainUpdates)
-			: document.startViewTransition!(unchainUpdates),
-			useTypesPolyfill === 'always' || useTypesPolyfill !== 'never' && nativeSupport === 'partial');
+		currentViewTransition = polyfilledTypes(
+			surrogate
+				? createViewTransitionSurrogate(unchainUpdates)
+				: document.startViewTransition!(unchainUpdates),
+			useTypesPolyfill === 'always' || (useTypesPolyfill !== 'never' && nativeSupport === 'partial')
+		);
 		currentViewTransition.finished.finally(() => {
 			getTypeAttributes()?.forEach((t) => document.documentElement.classList.remove(t));
 			currentViewTransition = undefined;
