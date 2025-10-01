@@ -1,6 +1,6 @@
 import { setSelectedViewTransitionNames } from '../set-view-transition-names';
 
-/* This scripts must be loaded inside the `<head>` of a page.
+/* This script must be loaded inside the `<head>` of a page.
 
 The function sets up eventListeners that look for script elements with a `data-vtbag-decl` attribute and uses its value to set view transition names. The value is interpreted as a semicolon separated list of `<selector> '=' <prefix>` pairs. Those pairs are then used to set view transition names.
 
