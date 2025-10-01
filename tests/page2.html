@@ -8,35 +8,46 @@
 	<title>Page 2</title>
 	<script type="vtbag" data-vtbag-decl="a=te~st1-;;i"></script>
 	<script src="/declarative-names.js"
-		data-vtbag-decl="a,h1~=test!2-; fus!sel; p:nth-child(odd)=test3~;p~=test4~;p:last-of-type="></script>
+		data-vtbag-decl="a,h1~=test!2-; fus!sel; p:nth-child(odd)=test3~;p:in-viewport~=test4~;p:last-of-type="></script>
+	<style>
+		p {
+			line-height: 80px;
+			outline: 1px solid black;
+		}
+	</style>
 </head>
 
 <body>
 	<h1>Page 2</h1>
 	<a href="/page2">Click Me!</a>
 	<a href="/page2">Click Me!</a>
-	<p></p>
-	<p></p>
-	<p></p>
-	<p></p>
-	<p></p>
-	<p></p>
-	<p></p>
-	<p></p>
-	<p></p>
-	<p></p>
-	<p><i></i><i id="someI"></i><i></i></p>
-	<p></p>
-	<p></p>
-	<p></p>
-	<p></p>
-	<p></p>
-	<p></p>
-	<p></p>
-	<p></p>
-	<p id="lastOne"></p>
+	<p>1</p>
+	<p>2</p>
+	<p>3</p>
+	<p>4</p>
+	<p>5</p>
+	<p>6</p>
+	<p>7</p>
+	<p>8</p>
+	<p>9</p>
+	<p>10</p>
+	<p>11<i></i><i id="someI"></i><i></i></p>
+	<p>12</p>
+	<p>13</p>
+	<p>14</p>
+	<p>15</p>
+	<p>16</p>
+	<p>17</p>
+	<p>18</p>
+	<p>19</p>
+	<p>20</p>
+	<p>21</p>
+	<p>22</p>
+	<p>23</p>
+	<p id="lastOne">24</p>
 
-	<script>setTimeout(() => {
+	<script>
+		setTimeout(() => {
 			console.log("test", document.querySelector("a").style.viewTransitionName);
 			console.log("test", document.querySelector("h1").style.viewTransitionName);
 			const ps = document.querySelectorAll("p");
@@ -44,6 +55,7 @@
 			console.log("test", ps[0].style.viewTransitionName !== "test4-0" || ps[2].style.viewTransitionName !== "test4-1");
 			console.log("test", lastOne.style.viewTransitionName === "");
 			console.log("test", someI.style.viewTransitionName);
+			console.log("test", [...document.querySelectorAll("p")].filter(e => e.style.viewTransitionName !== "").length);
 		}, 100)
 	</script>
 </body>

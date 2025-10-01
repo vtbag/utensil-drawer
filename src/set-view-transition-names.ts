@@ -3,8 +3,9 @@
 */
 export function setSelectedViewTransitionNames(selector: string, prefix: any, force = false) {
 	let selected;
+	let stripped = selector.replace(/:in-viewport\s*$/, '');
 	try {
-		selected = document.querySelectorAll<HTMLElement>(selector);
+		selected = document.querySelectorAll<HTMLElement>(stripped);
 	} catch (e) {
 		console.error(
 			(e as Error).message.replace(
@@ -14,7 +15,25 @@ export function setSelectedViewTransitionNames(selector: string, prefix: any, fo
 		);
 		return;
 	}
-	setGivenViewTransitionNames([...selected], prefix, force);
+	let elements = [...selected];
+
+	if (selector.length !== stripped.length) {
+		elements = elements.filter((e) => {
+			const rect = e.getBoundingClientRect();
+			const overlapX = Math.max(
+				0,
+				Math.min(rect.right, window.innerWidth) - Math.max(rect.left, 0)
+			);
+			const overlapY = Math.max(
+				0,
+				Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0)
+			);
+			console.log(rect, overlapX, overlapY);
+			return overlapX > 0 && overlapY > 0;
+		});
+	}
+
+	setGivenViewTransitionNames(elements, prefix, force);
 }
 
 /* Sets the view transition name in the style attribute of the given elements.
@@ -34,7 +53,7 @@ export function setGivenViewTransitionNames(
 	}
 	prefix = CSS.escape(prefix);
 	elements.forEach((element, idx, array) => {
-		const name = `${prefix}${array.length > 1 && prefix !== '' && prefix !== 'none' && prefix !== 'auto' ? idx : ''}`;
+		const name = `${prefix}${array.length > 1 && prefix !== '' && prefix !== 'none' && prefix !== 'auto' && prefix !== 'match-element' ? idx : ''}`;
 		(force && (element.style.viewTransitionName = name)) ||
 			(element.style.viewTransitionName ||= name);
 	});

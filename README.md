@@ -13,15 +13,18 @@ The @vtbag website can be found at https://vtbag.dev/
 
 ## !!! News !!!
 
-> mayStartViewTransition() gets better and better. Not only overhauled, refactored, optimized and thoroughly tested...
-
-> ...now also supports an option that **rewrites view transition types** as CSS classes added to the :root element! In combination with the `postcss-active-view-transition-type` PostCSS plugin, you can use view transition types from Level 2 of the View Transition API even in browsers that only support Level 1 view transitions, yet. Looking at you, Firefox (Nightly). 
+> ### The `declarative-names` script now supports `:in-viewport`!
+>
+> Do many of the elements you want to automatically add view-transition-names to fall outside the viewport? The declarative-names script now supports a new pseudo-class that you can add at the end of selectors. By using `:in-viewport`, only the elements overlapping with the current viewport will be named!
 
 For details see https://vtbag.dev/tools/utensil-drawer/
 
+
 ## What happened before?
 
-> Here are two exciting (still experimental) additions:
+> mayStartViewTransition() gets better and better. Not only overhauled, refactored, optimized and thoroughly tested...
+
+> ...now also supports an option that **rewrites view transition types** as CSS classes added to the :root element! In combination with the `postcss-active-view-transition-type` PostCSS plugin, you can use view transition types from Level 2 of the View Transition API even in browsers that only support Level 1 view transitions, yet. Looking at you, Firefox (Nightly). 
 
 * **Access morph animation parameters directly in CSS!**
 You can now access the key parameters of each morph animation in CSS rules! Make them available as CSS pseudo properties on your `::view-transition-group` elements. Calculate animation values based on old and new positions, widths, and heights. Let the `vectors` script handle the JavaScript while you create pure CSS styles that go far beyond basic morphs!
