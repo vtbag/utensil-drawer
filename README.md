@@ -26,11 +26,11 @@ For details see https://vtbag.dev/tools/utensil-drawer/
 
 > ...now also supports an option that **rewrites view transition types** as CSS classes added to the :root element! In combination with the `postcss-active-view-transition-type` PostCSS plugin, you can use view transition types from Level 2 of the View Transition API even in browsers that only support Level 1 view transitions, yet. Looking at you, Firefox (Nightly). 
 
-* **Access morph animation parameters directly in CSS!**
+> **Access morph animation parameters directly in CSS!**
 You can now access the key parameters of each morph animation in CSS rules! Make them available as CSS pseudo properties on your `::view-transition-group` elements. Calculate animation values based on old and new positions, widths, and heights. Let the `vectors` script handle the JavaScript while you create pure CSS styles that go far beyond basic morphs!
 
 
-* Tiered of checking if `startViewTransition` is supported and whether it wants a function or also accepts the new object with view transitions types? The Drawer now includes the (still experimental) `mayStatViewTransition` function:
+> Tiered of checking if `startViewTransition` is supported and whether it wants a function or also accepts the new object with view transitions types? The Drawer now includes the (still experimental) `mayStatViewTransition` function:
     * Works with the new signature in all supported browsers
     * Falls back gracefully if view transitions are not  natively supported
     * 🥁🥁🥁 Optionally **prevents killing** the current transitions when a new one is started **by automatically chaining** view transitions 🥁🥁🥁
