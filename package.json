@@ -66,15 +66,15 @@
 		"url": "https://github.com/sponsors/martrapp"
 	},
 	"devDependencies": {
-		"@changesets/cli": "^2.29.5",
-		"@eslint/js": "^9.31.0",
-		"@playwright/test": "^1.54.1",
-		"@types/dom-navigation": "^1.0.5",
+		"@changesets/cli": "^2.29.7",
+		"@eslint/js": "^9.36.0",
+		"@playwright/test": "^1.55.1",
+		"@types/dom-navigation": "^1.0.6",
 		"@types/dom-view-transitions": "^1.0.6",
-		"esbuild": "^0.25.6",
+		"esbuild": "^0.25.10",
 		"prettier": "^3.6.2",
-		"publint": "^0.3.12",
-		"serve": "^14.0.1",
-		"typescript": "^5.8.3"
+		"publint": "^0.3.13",
+		"serve": "^14.2.5",
+		"typescript": "^5.9.3"
 	}
 }
