@@ -1,5 +1,13 @@
 # @vtbag/utensil-drawer
 
+## 1.2.12
+
+### Patch Changes
+
+- 20154f1: The `declarative-names` script can now skip elements that are outside the viewport!
+
+  Use the new `:in-viewport` pseudo-class to target only element that have an overlap with the current viewport. For example `":is(h2,h3):in-viewport = heading-"`
+
 ## 1.2.11
 
 ### Patch Changes
