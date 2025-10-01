@@ -15,12 +15,11 @@ const collisionBehaviors = ['skipOld', 'chaining', 'chaining-only', 'skipNew', '
 let nativeSupport = 'none';
 if (document.startViewTransition) {
 	try {
-		document.startViewTransition({ update: () => {}, types: [] }).skipTransition();
+		document.startViewTransition({ update: () => { }, types: [] }).skipTransition();
 		nativeSupport = 'full';
 	} catch (e) {
 		nativeSupport = 'partial';
 	}
-	// @ts-expect-error
 	if (Element.prototype.startViewTransition) {
 		nativeSupport = 'scoped';
 	}
@@ -43,10 +42,10 @@ const close = () => {
 	open = undefined;
 };
 const chained: ViewTransitionRequest[] = [];
-const updates: UpdateCallback[] = [];
+const updates: ViewTransitionUpdateCallback[] = [];
 let typeAttributes: Set<string>;
 interface ViewTransitionRequest {
-	update: UpdateCallback;
+	update: ViewTransitionUpdateCallback;
 	extensions: StartViewTransitionExtensions;
 	proxy: SwitchableViewTransition;
 }
@@ -65,7 +64,7 @@ interface ViewTransitionRequest {
 	You can crank up the speed of running animations by setting "speedUpWhenChained" to > 1.
 */
 export function mayStartViewTransition(
-	param?: StartViewTransitionParameter | UpdateCallback,
+	param?: StartViewTransitionOptions | ViewTransitionUpdateCallback,
 	ext: StartViewTransitionExtensions = {}
 ): ViewTransition {
 	let {
@@ -79,7 +78,7 @@ export function mayStartViewTransition(
 		(console.warn(
 			`Invalid collisionBehavior "${collisionBehavior}" specified, using "skipOld" instead`
 		),
-		(collisionBehavior = 'skipOld'));
+			(collisionBehavior = 'skipOld'));
 
 	const extensions = {
 		collisionBehavior,
@@ -88,8 +87,8 @@ export function mayStartViewTransition(
 		useTypesPolyfill,
 	};
 
-	const update = (param instanceof Function ? param : param?.update) ?? (() => {});
-	const types = new Set(param instanceof Function ? [] : (param?.types ?? []));
+	const update = (param instanceof Function ? param : param?.update) ?? (() => { });
+	const types = new Set(param instanceof Function ? [] : ((param as StartViewTransitionOptions)?.types ?? []));
 	const reduceMotion =
 		respectReducedMotion && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -116,7 +115,7 @@ export function mayStartViewTransition(
 			getTypeAttributes()?.forEach((t) => document.documentElement.classList.remove(t));
 			currentViewTransition = undefined;
 			chained.splice(0, chained.length).forEach(({ update, extensions, proxy }) => {
-				mayStartViewTransition({ update, types: proxy.types }, extensions);
+				mayStartViewTransition({ update, types: [...proxy.types] }, extensions);
 				proxy.switch();
 			});
 		});

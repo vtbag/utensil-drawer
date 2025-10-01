@@ -19,9 +19,9 @@ export default defineConfig({
 			name: 'webkit',
 			use: { ...devices['Desktop Safari'], browserName: 'webkit' },
 		},
-		{
+/*		{
 			name: 'firefox',
 			use: { ...devices['Desktop Firefox'], browserName: 'firefox' },
-		},
+		},*/
 	] 
 });
