@@ -58,7 +58,7 @@ export function createViewTransitionProxy(types: Set<string>): SwitchableViewTra
 		},
 		{
 			get(target, prop: keyof ViewTransition): any {
-				return delegate ? delegate[prop] : target[prop];
+				return delegate ? delegate[prop] : (target as Record<string, unknown>)[prop];
 			},
 		}
 	);
