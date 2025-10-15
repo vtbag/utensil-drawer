@@ -13,14 +13,16 @@ The @vtbag website can be found at https://vtbag.dev/
 
 ## !!! News !!!
 
-> ### The `declarative-names` script now supports `:in-viewport`!
->
+> `mayStartViewTransition` can now also handle scoped view transitions on supporting browsers. Usage: add `scope: someElement` to the extension object. 
+
+## What happened before?
+
+
 > Do many of the elements you want to automatically add view-transition-names to fall outside the viewport? The declarative-names script now supports a new pseudo-class that you can add at the end of selectors. By using `:in-viewport`, only the elements overlapping with the current viewport will be named!
 
 For details see https://vtbag.dev/tools/utensil-drawer/
 
 
-## What happened before?
 
 > mayStartViewTransition() gets better and better. Not only overhauled, refactored, optimized and thoroughly tested...
 

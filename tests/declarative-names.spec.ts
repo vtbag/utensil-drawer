@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 test('call', async ({ page, browserName }) => {
-	//if (browserName === "firefox") test.skip(); // await Firefox v144
+	if (browserName === "firefox") test.skip(); // await Firefox v144
 	
 	let text = "";
 	page.on("console", msg => (msg.text().startsWith("test ") && (text += msg.text().slice(4))));
