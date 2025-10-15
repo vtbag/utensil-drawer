@@ -98,6 +98,13 @@ export function mayStartViewTransition(
 		catchErrors = true,
 	} = ext;
 
+	if (scope !== document && nativeSupport !== 'scoped') {
+		console.warn(
+			`Using a scope other than document is only supported in browsers with scoped view transitions`
+		);
+		scope = document;
+		collisionBehavior = 'never';
+	}
 	const scopeData = getScopeData(scope);
 
 	collisionBehaviors.includes(collisionBehavior) ||
