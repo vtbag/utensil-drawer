@@ -67,13 +67,13 @@
 	},
 	"devDependencies": {
 		"@changesets/cli": "^2.29.7",
-		"@eslint/js": "^9.36.0",
-		"@playwright/test": "^1.55.1",
+		"@eslint/js": "^9.37.0",
+		"@playwright/test": "^1.56.0",
 		"@types/dom-navigation": "^1.0.6",
 		"@types/dom-view-transitions": "^1.0.6",
-		"esbuild": "^0.25.10",
+		"esbuild": "^0.25.11",
 		"prettier": "^3.6.2",
-		"publint": "^0.3.13",
+		"publint": "^0.3.14",
 		"serve": "^14.2.5",
 		"typescript": "^5.9.3"
 	}
