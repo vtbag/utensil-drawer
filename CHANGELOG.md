@@ -1,5 +1,11 @@
 # @vtbag/utensil-drawer
 
+## 1.2.13
+
+### Patch Changes
+
+- e2cf3c6: mayStartViewTransitions can now also handle scoped view transitions
+
 ## 1.2.12
 
 ### Patch Changes

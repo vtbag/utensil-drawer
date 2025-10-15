@@ -1,7 +1,7 @@
 {
 	"name": "@vtbag/utensil-drawer",
 	"type": "module",
-	"version": "1.2.12",
+	"version": "1.2.13",
 	"description": "Pull out just what you need to craft seamless transitions. The Utensil Drawer holds reusable functions to help you build websites with view transitions. It is a bit sparse right now, but like the one in your kitchen, it is bound to fill up over time.",
 	"sideEffects": false,
 	"files": [
