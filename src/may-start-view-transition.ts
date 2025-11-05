@@ -57,8 +57,14 @@ const close = (scopeData: ScopeData) => {
 
 let nativeSupport = 'none';
 if (document.startViewTransition) {
+	document.body.insertAdjacentHTML(
+		'beforeend',
+		"<style class='vtbag-ud-feature-detection'>* {view-transition-name: none !important}</style>"
+	);
 	try {
-		document.startViewTransition({ update: () => { }, types: [] }).skipTransition();
+		document
+			.startViewTransition({})
+			.finished.then(() => document.querySelector('.vtbag-ud-feature-detection')?.remove());
 		nativeSupport = 'full';
 	} catch (e) {
 		nativeSupport = 'partial';
@@ -111,7 +117,7 @@ export function mayStartViewTransition(
 		(console.warn(
 			`Invalid collisionBehavior "${collisionBehavior}" specified, using "skipOld" instead`
 		),
-			(collisionBehavior = 'skipOld'));
+		(collisionBehavior = 'skipOld'));
 
 	const extensions = {
 		collisionBehavior,
@@ -120,7 +126,7 @@ export function mayStartViewTransition(
 		useTypesPolyfill,
 	};
 
-	const update = (param instanceof Function ? param : param?.update) ?? (() => { });
+	const update = (param instanceof Function ? param : param?.update) ?? (() => {});
 	const types = new Set(
 		param instanceof Function ? [] : ((param as StartViewTransitionOptions)?.types ?? [])
 	);
