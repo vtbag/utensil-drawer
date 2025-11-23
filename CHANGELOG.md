@@ -1,5 +1,12 @@
 # @vtbag/utensil-drawer
 
+## 1.2.14
+
+### Patch Changes
+
+- c5e371a: Make polyfilled types compatible with scoped view transitions.
+- c6fd8a7: Improves the feature detection code for better robustness and less intrusiveness.
+
 ## 1.2.13
 
 ### Patch Changes
