@@ -1,9 +1,14 @@
 let typeAttributes: Set<string>;
 export const getTypeAttributes = () => typeAttributes;
 
-export function polyfilledTypes(viewTransition: ViewTransition, proxied: boolean): ViewTransition {
+export function polyfilledTypes(
+	scope: Document | Element,
+	viewTransition: ViewTransition,
+	proxied: boolean
+): ViewTransition {
 	if (!proxied) return viewTransition;
-	const classList = document.documentElement.classList;
+	//@ts-ignore
+	const classList = ('documentElement' in scope ? scope.documentElement : scope).classList;
 	let types = undefined;
 
 	const typeAttr = 'vtbag-vtt-0'; // for :active-view-transition, postcss-active-view-transition-type

@@ -64,7 +64,9 @@ if (document.startViewTransition) {
 		"<style class='vtbag-ud-feature-detection'>* {view-transition-name: none !important}</style>"
 	);
 	try {
-		document.startViewTransition({}).finished.then(cleanup);
+		document
+			.startViewTransition({ update: () => 'vtbag-ud-feature-detection' })
+			.finished.then(cleanup);
 		nativeSupport = 'full';
 	} catch (e) {
 		nativeSupport = 'partial';
@@ -105,7 +107,7 @@ export function mayStartViewTransition(
 		catchErrors = true,
 	} = ext;
 
-	if (scope !== document && nativeSupport !== 'scoped') {
+	if (!('documentElement' in scope) && nativeSupport !== 'scoped') {
 		console.warn(
 			`Using a scope other than document is only supported in browsers with scoped view transitions`
 		);
@@ -148,6 +150,7 @@ export function mayStartViewTransition(
 		scopeData.keepLast = !!scopeData.currentViewTransition && !!scopeData.open;
 		scopeData.open = requestAnimationFrame(() => close(scopeData));
 		scopeData.currentViewTransition = polyfilledTypes(
+			scope,
 			(scopeData.currentViewTransition = surrogate
 				? createViewTransitionSurrogate(unchainUpdates)
 				: scope.startViewTransition!(unchainUpdates)),
