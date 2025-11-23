@@ -1,12 +1,19 @@
 # @vtbag/utensil-drawer
 
-## 1.2.13
+## 1.2.14 - 2025-11-23
+
+### Patch Changes
+
+- c5e371a: Make polyfilled types compatible with scoped view transitions.
+- c6fd8a7: Improves the feature detection code for better robustness and less intrusiveness.
+
+## 1.2.13 - 2025-10-15
 
 ### Patch Changes
 
 - e2cf3c6: mayStartViewTransitions can now also handle scoped view transitions
 
-## 1.2.12
+## 1.2.12 - 2025-10-01
 
 ### Patch Changes
 
@@ -14,7 +21,7 @@
 
   Use the new `:in-viewport` pseudo-class to target only element that have an overlap with the current viewport. For example `":is(h2,h3):in-viewport = heading-"`
 
-## 1.2.11
+## 1.2.11 - 2025-07-16
 
 ### Patch Changes
 
@@ -128,7 +135,7 @@
 
 - 8b2d2f5: Still not officially supported. Code refactorings and renames. Breaking: vtn -> declarative-names.
 
-## 0.0.3 -2024-12-12
+## 0.0.3 - 2024-12-12
 
 ### Patch Changes
 
