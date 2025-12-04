@@ -1,4 +1,4 @@
-import { getTypeAttributes, polyfilledTypes } from './polyfilled-types.js';
+import { getTypeAttributes, polyfilledTypes, root } from './polyfilled-types.js';
 import {
 	createViewTransitionProxy,
 	SwitchableViewTransition,
@@ -6,7 +6,7 @@ import {
 import { createViewTransitionSurrogate } from './view-transition-surrogate.js';
 
 export interface StartViewTransitionExtensions {
-	scope?: Document | Element; // default is document
+	scope?: Document | HTMLElement; // default is document
 	respectReducedMotion?: boolean; // default is true
 	collisionBehavior?: 'skipOld' | 'chaining' | 'chaining-only' | 'skipNew' | 'never'; // default is "skipOld"
 	speedUpWhenChained?: number; // default is 1.0
@@ -162,7 +162,7 @@ export function mayStartViewTransition(
 			scopeData.currentViewTransition.ready.catch(error);
 		}
 		scopeData.currentViewTransition.finished.finally(() => {
-			getTypeAttributes()?.forEach((t) => document.documentElement.classList.remove(t));
+			getTypeAttributes()?.forEach((t) => root(scope).classList.remove(t));
 			scopeData.currentViewTransition = undefined;
 			scopeData.chained
 				.splice(0, scopeData.chained.length)
@@ -180,10 +180,12 @@ export function mayStartViewTransition(
 	const proxy = createViewTransitionProxy(types);
 	scopeData.chained.push({ update, extensions, proxy });
 	if (extensions.speedUpWhenChained !== 1) {
-		document.getAnimations().forEach((a) => {
-			a.effect?.pseudoElement?.startsWith('::view-transition') &&
-				(a.playbackRate *= extensions.speedUpWhenChained!);
-		});
+		root(scope)
+			.getAnimations()
+			.forEach((a) => {
+				a.effect?.pseudoElement?.startsWith('::view-transition') &&
+					(a.playbackRate *= extensions.speedUpWhenChained!);
+			});
 	}
 	return proxy;
 

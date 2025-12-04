@@ -1,6 +1,10 @@
 let typeAttributes: Set<string>;
 export const getTypeAttributes = () => typeAttributes;
 
+export function root(scope: Document | HTMLElement): HTMLElement {
+	return 'documentElement' in scope ? scope.documentElement : scope;
+}
+
 export function polyfilledTypes(
 	scope: Document | Element,
 	viewTransition: ViewTransition,
