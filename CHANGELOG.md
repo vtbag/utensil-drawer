@@ -1,5 +1,11 @@
 # @vtbag/utensil-drawer
 
+## 1.2.15
+
+### Patch Changes
+
+- 20b38d7: mayStartViewTransition: now support `waitUntil` when simulating view transition objects during chaining.
+
 ## 1.2.14 - 2025-11-23
 
 ### Patch Changes
