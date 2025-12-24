@@ -8,12 +8,14 @@ export interface SwitchableViewTransition extends ViewTransition {
 export function createViewTransitionProxy(types: Set<string>): SwitchableViewTransition {
 	let delegate: ViewTransition | undefined = undefined;
 	let skipped = false;
+	const waitForThose: Promise<unknown>[] = [];
 	return new Proxy(
 		{
 			updateCallbackDone: createPromiseSubstitute(),
 			ready: createPromiseSubstitute(),
 			finished: createPromiseSubstitute(),
 			skipTransition: () => (delegate ? delegate.skipTransition() : (skipped = true)),
+			waitUntil: (promise: Promise<unknown>) => waitForThose.push(promise),
 			types: new Proxy(new Set(types), {
 				get(target, prop: string | symbol) {
 					if (prop === 'add') {
@@ -48,6 +50,9 @@ export function createViewTransitionProxy(types: Set<string>): SwitchableViewTra
 				if (delegate) throw new Error('Already switched to another view transition');
 				if (skipped) {
 					currentViewTransition?.skipTransition();
+				}
+				if ("waitUntil" in currentViewTransition) for (const promise of waitForThose) {
+					currentViewTransition.waitUntil(promise);
 				}
 				this.types = currentViewTransition.types ?? this.types;
 				this.updateCallbackDone.switch(currentViewTransition.updateCallbackDone);

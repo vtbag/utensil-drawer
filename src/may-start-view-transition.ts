@@ -65,7 +65,11 @@ if (document.startViewTransition) {
 	);
 	try {
 		document
-			.startViewTransition({ update: () => 'vtbag-ud-feature-detection' })
+			//@ts-ignore
+			.startViewTransition({
+				update: () => 'vtbag-ud-feature-detection',
+				"it's-me-vtbag-may-start-view-transition": true,
+			})
 			.finished.then(cleanup);
 		nativeSupport = 'full';
 	} catch (e) {
