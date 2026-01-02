@@ -57,25 +57,7 @@ const close = (scopeData: ScopeData) => {
 
 let nativeSupport = 'none';
 if (document.startViewTransition) {
-	const cleanup = () => document.querySelector('.vtbag-ud-feature-detection')?.remove();
-
-	document.body.insertAdjacentHTML(
-		'beforeend',
-		"<style class='vtbag-ud-feature-detection'>* {view-transition-name: none !important}</style>"
-	);
-	try {
-		document
-			//@ts-ignore
-			.startViewTransition({
-				update: () => 'vtbag-ud-feature-detection',
-				"it's-me-vtbag-may-start-view-transition": true,
-			})
-			.finished.then(cleanup);
-		nativeSupport = 'full';
-	} catch (e) {
-		nativeSupport = 'partial';
-		cleanup();
-	}
+	nativeSupport = "ViewTransitionTypeSet" in window ? 'full' : 'partial';
 	if (Element.prototype.startViewTransition) {
 		nativeSupport = 'scoped';
 	}
