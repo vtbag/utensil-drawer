@@ -23,7 +23,7 @@ test('two unchained calls', async ({ page, browserName }) => {
 	await page.locator('#b2').click();
 	await new Promise<void>(resolve => setTimeout(resolve, 1000));
 	expect(text).toBe(browserName === "firefox"
-		? "  true  hi  true  ho update1  ho update2  ho update1b done undefined finished update2b done undefined finished"
+		? "  true   true  ready error Error update1  update2  update1b done finished update2b done ::view-transition-group( finished"
 		: "  true  hi  true  ho ready error AbortError:  update1  ho update2  ho update1b done finished update2b done ::view-transition-group( finished");
 });
 
@@ -37,7 +37,7 @@ test('two chained calls', async ({ page, browserName }) => {
 	await page.locator('#b3').click();
 	await new Promise<void>(resolve => setTimeout(resolve, 1000));
 	expect(text).toBe(browserName === "firefox"
-		? "  true  hi  true  hi ho update1  hi ho update2  hi ho update1b update2b done done undefined undefined finished finished"
+		? "  true   true  update1  update2  update1b update2b done done ::view-transition-group(root) ::view-transition-group(root) finished finished"
 		: "  true  hi  true  hi ho update1  hi ho update2  hi ho update1b update2b done done ::view-transition-group(root) ::view-transition-group(root) finished finished");
 });
 
@@ -51,7 +51,7 @@ test('chained call after busy-waiting', async ({ page, browserName }) => {
 	await page.locator('#b4').click();
 	await new Promise<void>(resolve => setTimeout(resolve, 1000));
 	expect(text).toBe(browserName === "firefox"
-		? "  true  hi  true  hi ho update1  hi ho update2  hi ho update1b update2b done done undefined undefined finished finished"
+		? "  true   true  update1  update2  update1b update2b done done ::view-transition-group(root) ::view-transition-group(root) finished finished"
 		: "  true  hi  true  hi ho update1  hi ho update2  hi ho update1b update2b done done ::view-transition-group(root) ::view-transition-group(root) finished finished");
 });
 
@@ -65,7 +65,7 @@ test('two asynchronous chained calls', async ({ page, browserName }) => {
 	await page.locator('#b5').click();
 	await new Promise<void>(resolve => setTimeout(resolve, 1500));
 	expect(text).toBe(browserName === "firefox"
-		? "  true  hi  true  hi ho update1  hi ho update2  hi ho update1b update2b done done undefined undefined finished finished"
+		? "  true   true  update1  update2  update1b update2b done done ::view-transition-group(root) ::view-transition-group(root) finished finished"
 		: "  true  hi  true  hi ho update1  hi ho update2  hi ho update1b update2b done done ::view-transition-group(root) ::view-transition-group(root) finished finished");
 });
 
@@ -79,7 +79,7 @@ test('one plus two chained calls', async ({ page, browserName }) => {
 	await page.locator('#b6').click();
 	await new Promise<void>(resolve => setTimeout(resolve, 1500));
 	expect(text).toBe(browserName === "firefox"
-		? "  true  hi update1  hi  true  ho update1b done undefined finished update2  ho he  true  ha update2b done undefined ready2  ho he x2 finished update3  ha hu update3b done undefined finished"
+		? "  true  update1   true  ho update1b done ::view-transition-group(root)  true  ha finished update2  update3  update2b update3b done done ::view-transition-group(root) ::view-transition-group(root) finished finished"
 		: "  true  hi update1  hi  true  ho update1b done ::view-transition-group(root)  true  ha finished update2  ho he ha hu update3  ho he ha hu update2b update3b done done ::view-transition-group(root) ready2  ho he ha hu x2 ::view-transition-group(root) finished finished");
 });
 
@@ -93,7 +93,7 @@ test('second call interrupts during update', async ({ page, browserName }) => {
 	await page.locator('#b7').click();
 	await new Promise<void>(resolve => setTimeout(resolve, 1000));
 	expect(text).toBe(browserName === "firefox"
-		? "  true  hi update1  hi  true  ho update2  ho update1b done undefined finished update2b done undefined finished"
+		? "  true  update1   true  ready error Error update2  update1b done finished update2b done ::view-transition-group( finished"
 		: "  true  hi update1  hi  true  ho ready error AbortError:  update2  ho update1b done finished update2b done ::view-transition-group( finished");
 });
 
