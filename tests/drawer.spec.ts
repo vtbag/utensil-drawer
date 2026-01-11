@@ -9,9 +9,8 @@ test('API called once', async ({ page, browserName }) => {
 	await expect(page).toHaveTitle("Page 1");
 	await page.locator('#b1').click();
 	await new Promise<void>(resolve => setTimeout(resolve, 1000));
-	expect(text).toBe(browserName === "firefox"
-		? " start update1  update1b done undefined finished"
-		: " start update1  update1b done ::view-transition-group(root) finished");
+	console.log(await page.evaluate("navigator.userAgent"))
+	expect(text).toBe(" start update1  update1b done ::view-transition-group(root) finished");
 });
 
 test('two unchained calls', async ({ page, browserName }) => {
