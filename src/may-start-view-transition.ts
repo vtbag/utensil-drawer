@@ -57,7 +57,7 @@ const close = (scopeData: ScopeData) => {
 
 let nativeSupport = 'none';
 if (document.startViewTransition) {
-	nativeSupport = "ViewTransitionTypeSet" in window ? 'full' : 'partial';
+	nativeSupport = 'ViewTransitionTypeSet' in window ? 'full' : 'partial';
 	if (Element.prototype.startViewTransition) {
 		nativeSupport = 'scoped';
 	}

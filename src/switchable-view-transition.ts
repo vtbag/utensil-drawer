@@ -51,9 +51,10 @@ export function createViewTransitionProxy(types: Set<string>): SwitchableViewTra
 				if (skipped) {
 					currentViewTransition?.skipTransition();
 				}
-				if ("waitUntil" in currentViewTransition) for (const promise of waitForThose) {
-					currentViewTransition.waitUntil(promise);
-				}
+				if ('waitUntil' in currentViewTransition)
+					for (const promise of waitForThose) {
+						currentViewTransition.waitUntil(promise);
+					}
 				this.types = currentViewTransition.types ?? this.types;
 				this.updateCallbackDone.switch(currentViewTransition.updateCallbackDone);
 				this.ready.switch(currentViewTransition.ready);

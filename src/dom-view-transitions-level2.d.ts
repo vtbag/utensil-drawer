@@ -40,7 +40,7 @@ declare global {
 		readonly transitionRoot?: Element;
 		waitUntil(promise: Promise<unknown>): void;
 	}
-		interface Window {
+	interface Window {
 		navigation?: Navigation;
 	}
 	interface Navigation {
