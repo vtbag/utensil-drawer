@@ -143,7 +143,8 @@ export function mayStartViewTransition(
 			useTypesPolyfill === 'always' || (useTypesPolyfill !== 'never' && nativeSupport === 'partial')
 		);
 		if (catchErrors) {
-			const error = (e: any) => console.error(e);
+			const error = (e: any) =>
+				(catchErrors as any) !== 'suppress' && (console.error(e), undefined);
 			scopeData.currentViewTransition.updateCallbackDone.catch(error);
 			scopeData.currentViewTransition.ready.catch(error);
 		}
@@ -161,6 +162,7 @@ export function mayStartViewTransition(
 	if (scopeData.open && (collisionBehavior !== 'chaining-only' || scopeData.updates.length === 0)) {
 		types.forEach((t) => scopeData.currentViewTransition!.types?.add(t));
 		scopeData.updates.push(update);
+		(scope.ownerDocument ? scope : (scope.documentElement as any)).vtbagFlushUpdates = flushUpdates;
 		return scopeData.currentViewTransition;
 	}
 	const proxy = createViewTransitionProxy(types);
@@ -173,6 +175,7 @@ export function mayStartViewTransition(
 					(a.playbackRate *= extensions.speedUpWhenChained!);
 			});
 	}
+	(scope.ownerDocument ? scope : (scope.documentElement as any)).vtbagFlushUpdates = flushUpdates;
 	return proxy;
 
 	async function unchainUpdates() {
@@ -185,5 +188,8 @@ export function mayStartViewTransition(
 			(r) => r.status === 'rejected'
 		) as PromiseRejectedResult;
 		if (rejected) throw new Error(rejected.reason);
+	}
+	function flushUpdates() {
+		scopeData.updates.length = 0;
 	}
 }
