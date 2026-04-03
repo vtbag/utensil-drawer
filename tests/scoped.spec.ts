@@ -16,5 +16,5 @@ test('three parallel calls, two on the same element scope', async ({ page, brows
 	await expect(page).toHaveTitle("Page 1");
 	await page.locator('#b10').click();
 	await new Promise<void>(resolve => setTimeout(resolve, 1500));
-	expect(text).toBe("  true  true  hi  true  true  ho  true  true  ho hu update2  ho hu update3  ho hu update1  hi update1b done ::view-transition-group(foo) update2b update3b done done ::view-transition-group(bar) ::view-transition-group(bar) finished finished finished");
+	expect(text).toBe("  true  true  hi  true  true  ho  true  true  ho hu update1  hi update2  ho hu update3  ho hu update1b done ::view-transition-group(foo) update2b update3b done done ::view-transition-group(bar) ::view-transition-group(bar) finished finished finished");
 });

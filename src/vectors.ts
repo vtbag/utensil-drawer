@@ -35,8 +35,8 @@ export function setVectors(
 		if (!animation.animationName?.startsWith('-ua-view-transition-group')) return;
 		const effect = animation.effect;
 		const pseudo = effect?.pseudoElement as string;
-		
-		const group = pseudo.slice("::view-transition-group(".length,	 -1);
+
+		const group = pseudo.slice('::view-transition-group('.length, -1);
 		const emit = instructions.find((inst) => group.match(inst.pattern)?.[0] === group)?.props;
 		if (!emit) return;
 
