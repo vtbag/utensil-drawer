@@ -35,9 +35,9 @@
 		};
 
 		const attach = (viewTransition) => {
-			viewTransition.updateCallbackDone.then(() => console.log("test done"), e => console.log("test update error", e));
-			viewTransition.ready.then(() => console.log("test", (viewTransition.transitionRoot ?? document).getAnimations({ subtree: true })[0]?.effect.pseudoElement), e => console.log("test ready error", e));
-			viewTransition.finished.then(() => console.log("test finished"), e => console.log("test finished error", e));
+			viewTransition.updateCallbackDone.then(() => console.log("test done"), e => console.log("test update error"));
+			viewTransition.ready.then(() => console.log("test", (viewTransition.transitionRoot ?? document).getAnimations({ subtree: true })[0]?.effect.pseudoElement), e => console.log("test ready error"));
+			viewTransition.finished.then(() => console.log("test finished"), e => console.log("test finished error"));
 		};
 
 		document.querySelector("#b1").addEventListener("click", async () => {

@@ -22,9 +22,7 @@ test('two unchained calls', async ({ page, browserName }) => {
 	await expect(page).toHaveTitle("Page 1");
 	await page.locator('#b2').click();
 	await new Promise<void>(resolve => setTimeout(resolve, 1000));
-	expect(text).toBe(browserName === "firefox"
-		? "  true  hi  true  ho ready error Error update1  ho update2  ho update1b done finished update2b done ::view-transition-group( finished"
-		: "  true  hi  true  ho ready error AbortError:  update1  ho update2  ho update1b done finished update2b done ::view-transition-group( finished");
+	expect(text).toBe("  true  hi  true  ho ready error update1  ho update2  ho update1b done finished update2b done ::view-transition-group( finished");
 });
 
 test('two chained calls', async ({ page, browserName }) => {
@@ -84,9 +82,9 @@ test('second call interrupts during update', async ({ page, browserName }) => {
 	await expect(page).toHaveTitle("Page 1");
 	await page.locator('#b7').click();
 	await new Promise<void>(resolve => setTimeout(resolve, 1000));
-	expect(text).toBe(browserName === "firefox"
-		? "  true  hi update1  hi  true  ho ready error Error update2  ho update1b done finished update2b done ::view-transition-group( finished"
-		: "  true  hi update1  hi  true  ho ready error AbortError:  update2  ho update1b done finished update2b done ::view-transition-group( finished");
+	expect(text).toBe(browserName === "chromium"
+		? "  true  hi update1  hi  true  ho ready error update1b done finished update error ready error finished error"
+		: "  true  hi update1  hi  true  ho ready error update2  ho update1b done finished update2b done ::view-transition-group( finished");
 });
 
 
