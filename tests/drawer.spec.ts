@@ -82,9 +82,7 @@ test('second call interrupts during update', async ({ page, browserName }) => {
 	await expect(page).toHaveTitle("Page 1");
 	await page.locator('#b7').click();
 	await new Promise<void>(resolve => setTimeout(resolve, 1000));
-	expect(text).toBe(browserName === "chromium"
-		? "  true  hi update1  hi  true  ho ready error update1b done finished update error ready error finished error"
-		: "  true  hi update1  hi  true  ho ready error update2  ho update1b done finished update2b done ::view-transition-group( finished");
+	expect(text).toBe("  true  hi update1  hi  true  ho ready error update2  ho update1b done finished update2b done ::view-transition-group( finished");
 });
 
 
