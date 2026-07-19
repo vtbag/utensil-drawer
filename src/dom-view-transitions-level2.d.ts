@@ -49,6 +49,7 @@ declare global {
 
 	interface CSSStyleDeclaration {
 		viewTransitionGroup: string;
+		viewTransitionScope: string;
 	}
 }
 export {};
