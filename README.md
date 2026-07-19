@@ -12,13 +12,13 @@ Utensil Drawer: Pick the tools you need to craft the view transitions you want!
 The @vtbag website can be found at https://vtbag.dev/
 
 ## !!! News !!!
-
-> `mayStartViewTransition` can now also handle scoped view transitions on supporting browsers. Usage: add `scope: someElement` to the extension object. 
+Fixed a race condition that led to removal of the wrong polyfill classes during cleanup. 
 
 For details see https://vtbag.dev/tools/utensil-drawer/
 
 ## What happened before?
 
+> `mayStartViewTransition` can now also handle scoped view transitions on supporting browsers. Usage: add `scope: someElement` to the extension object. 
 
 > Do many of the elements you want to automatically add view-transition-names to fall outside the viewport? The declarative-names script now supports a new pseudo-class that you can add at the end of selectors. By using `:in-viewport`, only the elements overlapping with the current viewport will be named!
 

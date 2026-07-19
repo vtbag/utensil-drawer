@@ -1,4 +1,4 @@
-import { getTypeAttributes, polyfilledTypes, root } from './polyfilled-types.js';
+import { polyfilledTypes, root } from './polyfilled-types.js';
 import {
 	createViewTransitionProxy,
 	SwitchableViewTransition,
@@ -135,22 +135,37 @@ export function mayStartViewTransition(
 	if (!scopeData.currentViewTransition || collisionBehavior === 'skipOld') {
 		scopeData.keepLast = !!scopeData.currentViewTransition && !!scopeData.open;
 		scopeData.open = requestAnimationFrame(() => close(scopeData));
-		scopeData.currentViewTransition = polyfilledTypes(
-			scope,
-			(scopeData.currentViewTransition = surrogate
-				? createViewTransitionSurrogate(unchainUpdates)
-				: scope.startViewTransition!(unchainUpdates)),
-			useTypesPolyfill === 'always' || (useTypesPolyfill !== 'never' && nativeSupport === 'partial')
-		);
+		scopeData.currentViewTransition = surrogate
+			? createViewTransitionSurrogate(unchainUpdates)
+			: scope.startViewTransition!(unchainUpdates);
+		if (
+			useTypesPolyfill === 'always' ||
+			(useTypesPolyfill !== 'never' && nativeSupport === 'partial')
+		)
+			scopeData.currentViewTransition = polyfilledTypes(scope, scopeData.currentViewTransition);
+
+		const localTransition = scopeData.currentViewTransition;
 		if (catchErrors) {
 			const error = (e: any) =>
 				(catchErrors as any) !== 'suppress' && (console.error(e), undefined);
 			scopeData.currentViewTransition.updateCallbackDone.catch(error);
 			scopeData.currentViewTransition.ready.catch(error);
 		}
+
 		scopeData.currentViewTransition.finished.finally(() => {
-			getTypeAttributes()?.forEach((t) => root(scope).classList.remove(t));
-			scopeData.currentViewTransition = undefined;
+			if (scopeData.currentViewTransition !== localTransition) {
+				[...(localTransition.types ?? [])].forEach(
+					(t) =>
+						scopeData.currentViewTransition?.types.has(t) ||
+						root(scope).classList.remove(`vtbag-vtt-${t}`)
+				);
+			} else {
+				[...(localTransition.types ?? [])].forEach((t) =>
+					root(scope).classList.remove(`vtbag-vtt-${t}`)
+				);
+				root(scope).classList.remove('vtbag-vtt-0');
+				scopeData.currentViewTransition = undefined;
+			}
 			scopeData.chained
 				.splice(0, scopeData.chained.length)
 				.forEach(({ update, extensions, proxy }) => {
