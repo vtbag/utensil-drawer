@@ -1,4 +1,3 @@
-
 export function root(scope: Document | HTMLElement): HTMLElement {
 	return 'documentElement' in scope ? scope.documentElement : scope;
 }
