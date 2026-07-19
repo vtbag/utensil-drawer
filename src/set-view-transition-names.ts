@@ -28,7 +28,6 @@ export function setSelectedViewTransitionNames(selector: string, prefix: any, fo
 				0,
 				Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0)
 			);
-			console.log(rect, overlapX, overlapY);
 			return overlapX > 0 && overlapY > 0;
 		});
 	}
