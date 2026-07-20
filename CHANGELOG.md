@@ -1,5 +1,11 @@
 # @vtbag/utensil-drawer
 
+## 1.2.17 - 2026-07-20
+
+### Patch Changes
+
+- 096713e: Fixes a race condition where the wrong polyfill classes were removed when a transition was skipped.
+
 ## 1.2.16 - 2026-02-08
 
 ### Patch Changes
