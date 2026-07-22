@@ -1,5 +1,11 @@
 # @vtbag/utensil-drawer
 
+## 1.2.18 - 2026-07-22
+
+### Patch Changes
+
+- 6072b82: Ever had two single points of thruth. Fixed.
+
 ## 1.2.17 - 2026-07-20
 
 ### Patch Changes
