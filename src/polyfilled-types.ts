@@ -20,8 +20,7 @@ export function polyfilledTypes(
 						if (typesProp === 'add') {
 							return (value: string) => {
 								typesTarget.add(value);
-								const typeAttr = 'vtbag-vtt-' + value;
-								classList.add(typeAttr);
+								classList.add('vtbag-vtt-' + value);
 							};
 						} else if (typesProp === 'delete') {
 							return (value: string) => {
@@ -34,7 +33,7 @@ export function polyfilledTypes(
 								typesTarget.clear();
 							};
 						} else if (typesProp === 'has') {
-							return (value: string) => classList.contains('vtbag-vtt-' + value);
+							return (value: string) => typesTarget.has(value);
 						} else if (typesProp === Symbol.iterator) {
 							return () => typesTarget[Symbol.iterator]();
 						}

@@ -11,7 +11,7 @@
 ### Patch Changes
 
 - 9b2e7ab: mayStartViewTransition: Enhances error logging by allowing suppression when specified, and exposes a method to flush pending updates for better external control of state.
-- d5f2d9b: setvectors: Improves group name extraction for view transitions
+- d5f2d9b: setVectors: Improves group name extraction for view transitions
 
 ## 1.2.15 - 2026-01-02
 
