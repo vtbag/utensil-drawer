@@ -4,7 +4,7 @@
 
 ### Patch Changes
 
-- 6072b82: Ever had two single points of thruth. Fixed.
+- 6072b82: Ever had two single points of truth. Fixed.
 
 ## 1.2.17 - 2026-07-20
 
